@@ -1489,23 +1489,25 @@ function pickVoice(){
 if(synth){pickVoice(); synth.onvoiceschanged=pickVoice; setTimeout(pickVoice,600);}
 /* Lecture phrase par phrase : plus fluide, sans coupure sur les longs textes */
 function chunks(text){ return (text.match(/[^.!?;:]+[.!?;:]*|\S+/g)||[text]).map(s=>s.trim()).filter(Boolean); }
-let speechInfo={last:"",err:""};
+let speechInfo={last:"",err:""}, ttsUnlocked=false;
 function speakChunks(text,voice,lang,onend){
   if(!synth){speechInfo.err="Ce navigateur ne sait pas lire à voix haute."; onend&&onend();return;}
-  const parts=chunks(text);
+  const parts=chunks(text); let started=false;
   const start=()=>{
     try{ if(synth.paused) synth.resume(); }catch(e){}
     parts.forEach((part,i)=>{
       const u=new SpeechSynthesisUtterance(part);
       u.lang=voice&&voice.lang?voice.lang:lang; if(voice) u.voice=voice; u.rate=+vprefs.rate||1; u.pitch=1; u.volume=1;
-      if(i===0) u.onstart=()=>{speechInfo.last="ok";speechInfo.err="";};
+      u.onstart=()=>{ started=true; ttsUnlocked=true; if(i===0){speechInfo.last="ok";speechInfo.err="";} };
       u.onerror=e=>{ if(e&&e.error&&e.error!=="interrupted"&&e.error!=="canceled") speechInfo.err=e.error; if(i===parts.length-1) onend&&onend(); };
       if(i===parts.length-1) u.onend=()=>onend&&onend();
       synth.speak(u);
     });
   };
-  if(synth.speaking||synth.pending) synth.cancel();
-  start();
+  // iPhone : la toute première lecture doit partir pendant le toucher ; ensuite on laisse un court délai après cancel()
+  if(synth.speaking||synth.pending){ synth.cancel(); if(ttsUnlocked) setTimeout(start,120); else start(); } else start();
+  // filet de sécurité : si rien n'a démarré (lecture « avalée » par le navigateur), on relance une fois
+  setTimeout(()=>{ if(!started&&!synth.speaking&&!synth.pending){ try{synth.cancel();}catch(e){} start(); } },700);
 }
 /* ----- Voix enregistrée de Fabrice (fichiers audio) : marche aussi sur iPhone ----- */
 const VOICE_PACK=true;
@@ -1536,7 +1538,7 @@ function sayParts(parts,onend){
 function say(text,onend){ sayParts([text],onend); }
 if(synth){ const _cancel=synth.cancel.bind(synth); try{ synth.cancel=()=>{ stopClip(); _cancel(); }; }catch(e){} }
 function unlockClips(){ try{ if(!clipOn){ clipEl.src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="; const p=clipEl.play(); if(p&&p.catch) p.catch(()=>{}); } }catch(e){} }
-document.addEventListener("pointerdown",function once(){ unlockClips(); try{ if(synth&&!synth.speaking){ const u=new SpeechSynthesisUtterance(" "); u.volume=0; synth.speak(u); } }catch(e){} document.removeEventListener("pointerdown",once,true); },true); // débloque aussi la voix de l'iPhone
+document.addEventListener("pointerdown",function once(){ unlockClips(); document.removeEventListener("pointerdown",once,true); },true); // débloque aussi la voix de l'iPhone
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 let screen="start", curView="home";
@@ -2340,7 +2342,9 @@ function readOptions(){
   const txt=lOrder.map((oi,pos)=>"Proposition "+"ABCD"[pos]+" : "+optSpoken(data.o[oi][0])+".").join(" ");
   speakFr(txt);
 }
-function readLearn(){ const item=lDeck[lIdx], id=lIdx; say(item.q,()=>{ if(lIdx===id&&!lDone) setTimeout(()=>{ if(lIdx===id&&!lDone) readOptions(); },250); }); }
+function readLearn(){ const item=lDeck[lIdx], id=lIdx;
+  if(!ttsUnlocked){ const data=QCM[QUESTIONS.indexOf(item)]; speakFr(item.q+" "+lOrder.map((oi,pos)=>"Proposition "+"ABCD"[pos]+" : "+optSpoken(data.o[oi][0])+".").join(" ")); return; }
+  say(item.q,()=>{ if(lIdx===id&&!lDone) setTimeout(()=>{ if(lIdx===id&&!lDone) readOptions(); },250); }); }
 function learnValidate(){
   if(lDone||!lSel.size) return; lDone=true;
   const item=lDeck[lIdx], data=QCM[QUESTIONS.indexOf(item)];
