@@ -323,7 +323,7 @@ body:not(.v-home) .brand .logo{display:none}
 .linkbtn.danger{color:var(--bad)}
 .view{gap:14px}
 /* barre d'onglets en bas */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);
   padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
   background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);
   border-top:1px solid var(--sep)}
@@ -418,6 +418,106 @@ body:not(.v-home) .brand .logo{display:none}
 .road::before{background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--blue) 35%,transparent) 0 14px,transparent 14px 26px)}
 .plate#qCat{background:color-mix(in srgb,var(--blue) 11%,var(--surface));color:var(--blue);box-shadow:none;border-radius:999px;font-size:.82rem;padding:5px 12px;font-family:var(--ui)}
 .plate#qCat.ps{background:color-mix(in srgb,var(--red) 13%,var(--surface));color:color-mix(in srgb,var(--red) 80%,var(--ink))}
+
+/* ===================== Apprentissage (QCM) ===================== */
+.lprog{height:8px;border-radius:6px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));overflow:hidden}
+.lprog i{display:block;height:100%;width:0;background:var(--blue);border-radius:6px;transition:width .4s}
+.plate.lcat{background:color-mix(in srgb,var(--blue) 11%,var(--surface));color:var(--blue);box-shadow:none;border-radius:999px;font-size:.82rem;padding:5px 12px;font-family:var(--ui)}
+.plate.lcat.ps{background:color-mix(in srgb,var(--red) 13%,var(--surface));color:color-mix(in srgb,var(--red) 80%,var(--ink))}
+.icon-btn.help{background:color-mix(in srgb,#E8A317 14%,var(--surface));border-color:color-mix(in srgb,#E8A317 40%,var(--line));color:#7A5300}
+.lhint{font-weight:700;color:var(--muted);font-size:.9rem;margin:2px 4px -4px}
+.opts{display:flex;flex-direction:column;gap:10px}
+button,.opt,.cell,.tab{-webkit-tap-highlight-color:transparent}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:2px solid transparent;background:var(--surface);border-radius:18px;padding:14px 16px;
+  font:600 1rem/1.35 var(--ui);color:var(--ink);cursor:pointer;box-shadow:0 1px 2px color-mix(in srgb,var(--ink) 6%,transparent);transition:border-color .15s,background .15s,transform .1s}
+.opt:active{transform:scale(.99)}
+.opt:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt .let{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:grid;place-items:center;font:800 1rem var(--ui-d);background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
+.opt .otx{flex:1;min-width:0}
+.opt .mk{flex-shrink:0;font:800 .78rem var(--ui);padding:3px 8px;border-radius:999px}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
+.opt[aria-pressed="true"] .let{background:var(--blue);color:var(--blue-ink)}
+.opt.good{border-color:var(--ok);background:var(--ok-bg)} .opt.good .let{background:var(--ok);color:#FFF} .opt.good .mk{background:var(--ok);color:#FFF}
+.opt.missed{border-color:var(--ok);border-style:dashed;background:var(--surface)} .opt.missed .let{background:var(--ok-bg);color:var(--ok)} .opt.missed .mk{background:var(--ok-bg);color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)} .opt.wrong .let{background:var(--bad);color:#FFF} .opt.wrong .mk{background:var(--bad);color:#FFF}
+.opt.dim{opacity:.55}
+.opt[disabled]{cursor:default}
+.lres{border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.lres.ok{background:var(--ok-bg)} .lres.ok .lres-t{color:var(--ok)}
+.lres.bad{background:var(--bad-bg)} .lres.bad .lres-t{color:var(--bad)}
+.lres.partial{background:var(--warn-bg)} .lres.partial .lres-t{color:var(--warn)}
+.lres-t{font:800 1.3rem var(--ui-d)}
+.lres .anstext{color:var(--ink)}
+/* fenêtre « Comprendre » */
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg{position:absolute;inset:0;background:rgba(20,10,20,.38);animation:fadeIn .2s}
+.sheet-card{position:relative;width:min(640px,100%);max-height:92%;overflow:auto;background:var(--surface);border-radius:24px 24px 0 0;
+  padding:10px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px;animation:sheetUp .28s cubic-bezier(.2,.8,.2,1)}
+.sheet-grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 4px}
+.sheet-card h2{font:800 1.3rem var(--ui-d);margin:0}
+.scene svg{width:100%;height:auto;display:block;border-radius:16px}
+.helppts{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.98rem;line-height:1.4}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* animations des illustrations */
+.sc-cross{animation:scA 6s infinite}.sc-route{animation:scB 6s infinite}
+@keyframes scA{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}
+@keyframes scB{0%,45%{opacity:0}50%,95%{opacity:1}100%{opacity:0}}
+.sc-wiper{animation:wipe 2.2s ease-in-out infinite}
+@keyframes wipe{0%,100%{transform:rotate(0)}50%{transform:rotate(62deg)}}
+.sc-fog{animation:fog 6s ease-in-out infinite}
+@keyframes fog{0%{opacity:.9}60%,85%{opacity:0}100%{opacity:.9}}
+.sc-drops{animation:drops 2.2s linear infinite}
+@keyframes drops{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
+.sc-tire{animation:spin 1.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sc-water{animation:water 3s ease-in-out infinite}
+@keyframes water{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.sc-gauge{animation:gauge 3s ease-in-out infinite;transform-box:fill-box;transform-origin:100% 100%}
+@keyframes gauge{0%{transform:rotate(0)}60%,100%{transform:rotate(150deg)}}
+.sc-hood{animation:hood 4s ease-in-out infinite;transform-box:fill-box;transform-origin:0% 100%}
+@keyframes hood{0%,20%{transform:rotate(0)}45%,70%{transform:rotate(-32deg)}95%,100%{transform:rotate(0)}}
+.sc-trunk{animation:trunk 4s ease-in-out infinite;animation-delay:2s;transform-box:fill-box;transform-origin:100% 0%}
+@keyframes trunk{0%,20%{transform:rotate(0)}45%,70%{transform:rotate(-30deg)}95%,100%{transform:rotate(0)}}
+.sc-blink{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.sc-tri{animation:tri 4s ease-out infinite}
+@keyframes tri{0%{transform:translate(220px,92px) scale(.6);opacity:0}30%{opacity:1}60%,100%{transform:translate(96px,92px) scale(1);opacity:1}}
+.sc-pedal{animation:pedal 2s ease-in-out infinite;transform-box:fill-box;transform-origin:0% 0%}
+@keyframes pedal{0%,100%{transform:rotate(0)}50%{transform:rotate(14deg)}}
+.sc-disc{animation:spin 1.2s linear infinite;transform-box:fill-box;transform-origin:50% 50%}
+.sc-caliper{animation:clamp 2s ease-in-out infinite}
+@keyframes clamp{0%,100%{transform:translateX(0)}50%{transform:translateX(-8px)}}
+.sc-left{animation:blink 1s steps(1) infinite}.sc-right{animation:blink .45s steps(1) infinite}
+.sc-red{animation:blink 1.4s steps(1) infinite}
+.sc-wine{animation:wine 3s ease-in-out infinite;transform-origin:center bottom;transform-box:fill-box}
+@keyframes wine{0%{transform:scaleY(.15)}60%,100%{transform:scaleY(1)}}
+.sc-knob{animation:knob 3s ease-in-out infinite}
+@keyframes knob{0%,30%{transform:translateX(0)}50%,90%{transform:translateX(12px)}100%{transform:translateX(0)}}
+.sc-off{animation:blink 1.6s steps(1) infinite}
+.sc-needle{animation:needle 4s ease-out infinite;transform-box:fill-box;transform-origin:100% 50%}
+@keyframes needle{0%{transform:rotate(0)}55%,100%{transform:rotate(90deg)}}
+.sc-arc{stroke-dasharray:0 100;animation:arc 4s ease-out infinite}
+@keyframes arc{0%{stroke-dasharray:0 100}55%,100%{stroke-dasharray:100 100}}
+.sc-k1,.sc-k2,.sc-k3{animation:key 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.sc-k2{animation-delay:.5s}.sc-k3{animation-delay:1s}
+@keyframes key{0%,30%,100%{transform:scale(1)}15%{transform:scale(1.08)}}
+.sc-waves{animation:blink 1s steps(1) infinite}
+.sc-line{stroke-dasharray:0 100;animation:arc 4s linear infinite}
+.sc-chest{animation:chest 2.4s ease-in-out infinite}
+@keyframes chest{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.sc-fire{animation:fire .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center bottom}
+@keyframes fire{to{transform:scale(1.15,1.25)}}
+.sc-drag{animation:drag 4s ease-in-out infinite}
+@keyframes drag{0%{transform:translateX(20px)}70%,100%{transform:translateX(-40px)}}
+.sc-press{animation:press 1s ease-in-out infinite}
+@keyframes press{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.sc-blood{animation:blood 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes blood{0%{transform:scale(1.4)}70%,100%{transform:scale(.5)}}
+.sc-cpr{animation:cpr .55s ease-in-out infinite}
+@keyframes cpr{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+.sc-bolt{animation:blink 1.2s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.scene *{animation:none!important}}
 </style>
 </head>
 <body>
@@ -487,7 +587,8 @@ body:not(.v-home) .brand .logo{display:none}
 
   <nav class="tabbar" aria-label="Sections">
     <button type="button" class="tab" data-view="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg><span>Accueil</span></button>
-    <button type="button" class="tab" data-view="train"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg><span>Examen blanc</span></button>
+    <button type="button" class="tab" data-view="learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9 12 4l10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg><span>Apprendre</span></button>
+    <button type="button" class="tab" data-view="train"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg><span>Examen</span></button>
     <button type="button" class="tab" data-view="errors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg><span>Erreurs</span><i class="badge" id="tabErr">0</i></button>
     <button type="button" class="tab" data-view="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><span>Notes</span></button>
     <button type="button" class="tab" data-view="book" id="goBook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Lexique</span><i class="badge" id="tabBook">0</i></button>
@@ -554,10 +655,10 @@ body:not(.v-home) .brand .logo{display:none}
     </div>
     <h2 class="group-title">Réviser</h2>
     <div class="card list">
-      <button class="cell" type="button" id="goLearn" disabled>
+      <button class="cell" type="button" id="goLearn">
         <span class="cell-ic learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9 12 4l10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg></span>
-        <span class="cell-txt"><b>Apprentissage</b><span>Découvrir les questions et leurs réponses</span></span>
-        <span class="soon">Bientôt</span>
+        <span class="cell-txt"><b>Apprentissage</b><span id="goLearnSub">QCM : cochez la ou les bonnes réponses</span></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
       </button>
       <button class="cell" type="button" id="goExam">
         <span class="cell-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg></span>
@@ -577,6 +678,74 @@ body:not(.v-home) .brand .logo{display:none}
       <p class="muted small-txt">Une question est maîtrisée quand votre dernière réponse était juste.</p>
     </div>
   </section>
+
+  <section id="learn" class="stack view" data-v="learn" hidden>
+    <div id="lStart" class="stack">
+      <div class="card stack">
+        <div class="stack" style="gap:8px">
+          <span class="lbl">Thème des questions</span>
+          <div class="seg" role="radiogroup" aria-label="Thème des questions">
+            <input type="radio" name="lcat" id="lcat-all" value="ALL" checked><label for="lcat-all">Les deux</label>
+            <input type="radio" name="lcat" id="lcat-sr" value="SR"><label for="lcat-sr">Sécurité routière</label>
+            <input type="radio" name="lcat" id="lcat-ps" value="PS"><label for="lcat-ps">Premiers secours</label>
+          </div>
+        </div>
+        <div class="stack" style="gap:8px">
+          <span class="lbl">Questions par série</span>
+          <div class="seg" role="radiogroup" aria-label="Nombre de questions">
+            <input type="radio" name="lnb" id="lnb-10" value="10" checked><label for="lnb-10">10</label>
+            <input type="radio" name="lnb" id="lnb-20" value="20"><label for="lnb-20">20</label>
+          </div>
+        </div>
+        <p class="muted small-txt" id="lSeenInfo"></p>
+      </div>
+      <button class="btn big block" id="btnLearnStart" type="button">Commencer l'apprentissage</button>
+    </div>
+
+    <div id="lQuiz" class="stack" hidden>
+      <div class="row" style="justify-content:space-between"><span id="lCat" class="plate lcat">Sécurité routière</span><span class="counter" id="lCount">1 / 10</span></div>
+      <div class="lprog" aria-hidden="true"><i id="lBar"></i></div>
+      <div class="card stack qcard">
+        <div class="qhead"><p class="qtext" id="lText"></p>
+          <button class="rubtn" id="lRu" type="button" aria-expanded="false" title="Traduire un mot en russe"><span lang="ru">RU</span></button></div>
+        <div class="row">
+          <button class="icon-btn" id="lListen" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg> Réécouter</button>
+          <button class="icon-btn help" id="lHelp" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg> Comprendre</button>
+        </div>
+      </div>
+      <div id="lLexSlot"></div>
+      <p class="lhint" id="lHint">Une ou plusieurs réponses possibles</p>
+      <div class="opts" id="lOpts" role="group" aria-label="Propositions"></div>
+      <div id="lResult" class="lres" hidden>
+        <b class="lres-t" id="lResTitle"></b>
+        <span id="lResTxt"></span>
+        <div class="ansrow"><div class="anstext"><b>Réponse officielle</b><span id="lOfficial"></span></div>
+          <button class="speak" id="lHearAns" type="button" aria-label="Écouter la réponse officielle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button></div>
+      </div>
+      <button class="btn big block" id="lValidate" type="button" disabled>Valider</button>
+      <button class="btn big block" id="lNext" type="button" hidden>Question suivante</button>
+    </div>
+
+    <div id="lEnd" class="stack" hidden>
+      <div class="card ringcard">
+        <svg class="ring big" viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-bg" cx="60" cy="60" r="50"/><circle class="ring-fg" id="lRing" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/></svg>
+        <div class="ringtxt"><span class="kicker">Série terminée</span><p class="bignum"><b id="lScore">0</b><span id="lScoreOf">/10</span></p><p class="verdict-msg" id="lMsg"></p><p class="trend">bonnes réponses du premier coup</p></div>
+      </div>
+      <button class="btn big block" id="lAgain" type="button">Encore une série</button>
+      <button class="btn ghost block" id="lHome" type="button">Accueil</button>
+    </div>
+  </section>
+
+  <div class="sheet" id="helpSheet" hidden>
+    <div class="sheet-bg" id="helpBg"></div>
+    <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap"><h2 id="helpTitle"></h2><button class="linkbtn" id="helpClose" type="button">Fermer</button></div>
+      <div class="scene" id="helpScene"></div>
+      <ul class="helppts" id="helpPts"></ul>
+      <button class="icon-btn" id="helpReplay" type="button">Revoir l'animation</button>
+    </div>
+  </div>
 
   <section id="start" class="stack view" data-v="train">
     <div class="card stack">
@@ -1073,7 +1242,103 @@ function lookupWord(raw){
   if(t.length>=4) for(const e of LEXIQUE) for(const a of e[0]) if(a.startsWith(ts)||ts.startsWith(a)&&a.length>=4) return e;
   return null;
 }
-if(typeof module!=="undefined") module.exports={QUESTIONS,evaluate,norm,lookupWord,LEXIQUE};
+/* ---------- Apprentissage : 4 propositions par question (1 = juste) + illustration ---------- */
+const QCM=[{"s": "feux", "o": [["Pour ne pas éblouir les autres usagers (ex. : les voitures qui arrivent en face)", 1], ["Pour consommer moins de carburant", 0], ["Pour que les ampoules s'usent moins vite", 0], ["Pour pouvoir rouler plus vite la nuit", 0]]}, {"s": "vitres", "o": [["Pour éviter que le liquide gèle par temps froid", 1], ["Pour mieux enlever les insectes en été", 0], ["Parce que l'eau est interdite dans le réservoir toute l'année", 0], ["Pour protéger la peinture du capot", 0]]}, {"s": "feux", "o": [["Ne pas être ébloui par les phares du véhicule qui vous suit", 1], ["Mieux voir la route devant soi la nuit", 0], ["Agrandir le champ de vision vers l'arrière", 0], ["Éteindre l'éclairage intérieur", 0]]}, {"s": "pneus", "o": [["Sur une plaque collée sur une portière (ex. : le montant de la porte conducteur)", 1], ["Dans la notice d'utilisation du véhicule", 1], ["Au niveau de la trappe à carburant", 1], ["Sur le certificat d'immatriculation (carte grise)", 0]]}, {"s": "vitres", "o": [["Quand il pleut, ils laissent des traces sur le pare-brise", 1], ["Un voyant rouge s'allume au tableau de bord", 0], ["Ils ne fonctionnent plus qu'à grande vitesse", 0], ["Le liquide lave-glace se vide plus vite", 0]]}, {"s": "voiture", "o": [["La plaque d'immatriculation doit rester visible", 1], ["Les feux arrière doivent rester visibles", 1], ["Il faut désactiver l'airbag passager", 0], ["Il faut rouler avec les feux de détresse allumés", 0]]}, {"s": "balisage", "o": [["Le triangle de pré-signalisation", 1], ["Une trousse de secours", 0], ["Un extincteur", 0], ["Un éthylotest", 0]]}, {"s": "freins", "o": [["Une perte d'efficacité du freinage", 1], ["Une surconsommation de carburant", 0], ["Un volant plus dur à tourner", 0], ["Une usure plus rapide des pneus", 0]]}, {"s": "voiture", "o": [["Arrêter le moteur", 1], ["Ne pas fumer", 1], ["Ne pas téléphoner", 1], ["Allumer les feux de détresse", 0]]}, {"s": "vitres", "o": [["Une mauvaise visibilité quand il pleut ou qu'il neige", 1], ["Une panne de batterie", 0], ["Un risque d'éblouir les autres usagers", 0], ["Une usure du moteur", 0]]}, {"s": "voiture", "o": [["Un risque de brûlure (le liquide très chaud peut jaillir)", 1], ["Un risque de court-circuit de la batterie", 0], ["Aucun danger, c'est même conseillé", 0], ["Un risque de gel du liquide", 0]]}, {"s": "vitres", "o": [["Une mauvaise visibilité vers l'arrière, voire aucune", 1], ["Une mauvaise visibilité vers l'avant", 0], ["Une surchauffe du moteur", 0], ["Une panne des feux arrière", 0]]}, {"s": "tableau", "o": [["Une des ampoules des clignotants ne fonctionne plus", 1], ["Le réservoir de carburant est presque vide", 0], ["La batterie est en train de se charger", 0], ["Les feux de détresse sont allumés", 0]]}, {"s": "voiture", "o": [["Le moteur doit être froid", 1], ["La voiture doit être sur un terrain plat", 1], ["Le moteur doit tourner au ralenti", 0], ["Les phares doivent être allumés", 0]]}, {"s": "feux", "o": [["Par temps de brouillard", 1], ["Par temps de neige", 1], ["Par forte pluie", 0], ["La nuit sur une route non éclairée", 0]]}, {"s": "alcool", "o": [["0,2 g/l de sang, soit 0 verre : dès le premier verre on peut dépasser ce seuil", 1], ["0,5 g/l de sang, soit environ 2 verres", 0], ["0,8 g/l de sang", 0], ["Il n'y a pas de limite spéciale en permis probatoire", 0]]}, {"s": "balisage", "o": [["En cas de panne", 1], ["En cas d'accident", 1], ["En cas de ralentissement important (ex. : un bouchon soudain sur autoroute)", 1], ["Pour se garer quelques minutes en double file", 0]]}, {"s": "tableau", "o": [["Pour le confort de conduite", 1], ["Pour atteindre les commandes et bien voir le tableau de bord", 1], ["Pour que l'airbag soit efficace en cas de choc", 1], ["Pour consommer moins de carburant", 0]]}, {"s": "feux", "o": [["Pour avertir de son approche (ex. : avant un virage sans visibilité, la nuit)", 1], ["Pour prévenir d'un danger", 1], ["À la place du klaxon, notamment la nuit", 1], ["Pour remercier un conducteur qui vous a laissé passer", 0]]}, {"s": "vitres", "o": [["La vitesse de la ventilation", 1], ["L'air chaud", 1], ["La climatisation", 1], ["Le recyclage de l'air en continu", 0]]}, {"s": "voiture", "o": [["Une détérioration ou une casse du moteur", 1], ["Des phares moins puissants", 0], ["Un risque de gel du moteur", 0], ["Une usure des freins", 0]]}, {"s": "voiture", "o": [["Des feux restés allumés (ex. : les veilleuses oubliées la nuit)", 1], ["Des accessoires électriques en marche (ex. : autoradio, chargeur)", 1], ["Un niveau d'huile trop bas", 0], ["Un réservoir de carburant vide", 0]]}, {"s": "voiture", "o": [["Brancher une 2e batterie en parallèle avec des câbles (+ avec +, − avec −)", 1], ["Remplacer la batterie", 1], ["Brancher les câbles + avec −", 0], ["Rajouter de l'huile moteur", 0]]}, {"s": "freins", "o": [["Une dégradation du système de freinage (ex. : freins qui chauffent et s'usent)", 1], ["Une panne de la direction", 0], ["Une décharge de la batterie", 0], ["Aucun risque, il se desserre tout seul en roulant", 0]]}, {"s": "feux", "o": [["Une mauvaise vision de la route devant soi", 1], ["Un risque d'éblouir les autres usagers", 1], ["Une surconsommation de carburant", 0], ["Une panne des clignotants", 0]]}, {"s": "tableau", "o": [["Une surchauffe du moteur", 1], ["Une casse du moteur", 1], ["Un gel du liquide", 0], ["Un moteur plus performant", 0]]}, {"s": "feux", "o": [["Rendre le véhicule visible la nuit (quand des phares les éclairent)", 1], ["Éclairer la route", 0], ["Remplacer les feux de position", 0], ["Signaler un changement de direction", 0]]}, {"s": "enfant", "o": [["Activer la sécurité enfant sur les deux portières arrière", 1], ["Verrouiller les portes uniquement avec la clé", 0], ["Désactiver l'airbag passager", 0], ["Baisser les vitres arrière", 0]]}, {"s": "feux", "o": [["À 150 mètres", 1], ["À 30 mètres", 0], ["À 50 mètres", 0], ["À 500 mètres", 0]]}, {"s": "pneus", "o": [["C'est un film d'eau qui se forme entre le pneu et la route", 1], ["Il peut faire perdre le contrôle du véhicule", 1], ["C'est une panne du moteur causée par l'eau", 0], ["C'est le gel du liquide lave-glace", 0]]}, {"s": "vitesse", "o": [["Appuyer sur la pédale de frein", 1], ["Appuyer sur la pédale d'embrayage", 1], ["Tourner le volant", 0], ["Allumer les feux de détresse", 0]]}, {"s": null, "o": [["En cas de danger immédiat", 1], ["Pour saluer quelqu'un", 0], ["Pour faire avancer la voiture de devant", 0], ["Jamais, c'est toujours interdit en ville", 0]]}, {"s": "enfant", "o": [["Quand un enfant est à l'avant dans un siège auto dos à la route", 1], ["Quand le passager avant est un adulte", 0], ["Quand on roule sur autoroute", 0], ["Quand un enfant est assis à l'arrière", 0]]}, {"s": "pneus", "o": [["Chaque mois pour une utilisation normale", 1], ["Avant chaque long trajet", 1], ["Seulement une fois par an, au contrôle technique", 0], ["Uniquement quand un voyant s'allume", 0]]}, {"s": "feux", "o": [["Les usagers derrière ne savent pas que vous freinez", 1], ["Un risque de collision par l'arrière", 1], ["Des freins moins efficaces", 0], ["Aucune conséquence en plein jour", 0]]}, {"s": "feux", "o": [["Éclairer la zone derrière le véhicule la nuit", 1], ["Prévenir les autres usagers que vous reculez", 1], ["Signaler un freinage", 0], ["Remplacer les feux de brouillard", 0]]}, {"s": "enfant", "o": [["Retenir la tête en cas de choc", 1], ["Limiter les blessures (ex. : au cou, le « coup du lapin »)", 1], ["Pouvoir dormir plus confortablement", 0], ["Régler la hauteur du siège", 0]]}, {"s": "tableau", "o": [["Rouge : une anomalie ou un danger (il faut s'arrêter dès que possible)", 1], ["Orange : un élément important à surveiller", 1], ["Rouge : une simple information sans importance", 0], ["Orange et rouge veulent dire la même chose", 0]]}, {"s": "voiture", "o": [["Le capot peut s'ouvrir en roulant et provoquer un accident", 1], ["Le moteur risque de geler", 0], ["Les phares s'éteignent", 0], ["Aucun risque grâce aux airbags", 0]]}, {"s": "vitres", "o": [["De la buée apparaît sur les vitres et gêne la visibilité", 1], ["Le moteur surchauffe", 0], ["La batterie se décharge", 0], ["Les essuie-glaces s'abîment", 0]]}, {"s": "feux", "o": [["Éblouir les autres usagers", 1], ["Décharger la batterie", 0], ["Ne plus rien voir de la route", 0], ["Aucun risque si on roule doucement", 0]]}, {"s": "feux", "o": [["Rendre le véhicule plus visible le jour", 1], ["Éclairer la route la nuit", 0], ["Remplacer les feux de croisement la nuit", 0], ["Signaler un danger", 0]]}, {"s": null, "o": [["5 jours", 1], ["24 heures", 0], ["15 jours", 0], ["1 mois", 0]]}, {"s": "balisage", "o": [["Non : aller le poser à pied serait trop dangereux", 1], ["Oui, toujours à 30 m", 0], ["Oui, à 150 m", 0], ["Oui, mais seulement la nuit", 0]]}, {"s": "feux", "o": [["Une mauvaise visibilité", 1], ["Le risque d'être pris pour un deux-roues", 1], ["Un risque de panne du moteur", 0], ["Les feux de route ne marchent plus", 0]]}, {"s": "vitesse", "o": [["Ne pas dépasser la vitesse que vous avez choisie (ex. : 50 km/h en ville)", 1], ["Garder une vitesse sans appuyer sur l'accélérateur (c'est le régulateur)", 0], ["Freiner tout seul devant un obstacle", 0], ["Afficher la vitesse autorisée", 0]]}, {"s": "feux", "o": [["Être mal vu des autres usagers", 1], ["Un risque de collision", 1], ["Mal voir la route devant soi", 0], ["Une panne des feux stop", 0]]}, {"s": "vitres", "o": [["Le désembuage (ou dégivrage) de la lunette arrière", 1], ["Les feux de brouillard arrière", 0], ["Le recyclage de l'air", 0], ["Le lave-glace avant", 0]]}, {"s": "vitres", "o": [["Une mauvaise visibilité", 1], ["Une surchauffe du moteur", 0], ["Une perte de freinage", 0], ["Une décharge de la batterie", 0]]}, {"s": "vitres", "o": [["On ne peut plus nettoyer le pare-brise, donc on voit mal", 1], ["Les essuie-glaces ne bougent plus", 0], ["Le moteur risque de casser", 0], ["Les feux avant sont moins visibles", 0]]}, {"s": "voiture", "o": [["Augmenter la pression des pneus", 1], ["Régler la hauteur des feux avant", 1], ["Dégonfler un peu les pneus", 0], ["Allumer les feux de brouillard", 0]]}, {"s": "enfant", "o": [["Non, seulement les sièges compatibles Isofix", 1], ["Oui, tous les sièges enfants", 0], ["Oui, si l'enfant a plus de 10 ans", 0], ["Non, l'Isofix sert seulement aux sièges adultes", 0]]}, {"s": "voiture", "o": [["Une mauvaise visibilité vers l'arrière", 1], ["Les objets peuvent être projetés en cas de freinage brusque ou de choc", 1], ["Une usure des amortisseurs", 0], ["Une forte surconsommation", 0]]}, {"s": "voiture", "o": [["Empêcher le capot de s'ouvrir en roulant s'il est mal verrouillé", 1], ["Empêcher le vol du moteur", 0], ["Ouvrir le capot tout seul en cas de choc", 0], ["Bloquer l'ouverture du coffre", 0]]}, {"s": "enfant", "o": [["À partir de 10 ans", 1], ["À partir de 5 ans", 0], ["À partir de 14 ans", 0], ["À partir de 18 ans", 0]]}, {"s": "feux", "o": [["Oui", 1], ["Non, c'est un simple conseil", 0], ["Non, c'est seulement une amende", 0], ["Seulement pour les voitures de plus de 10 ans", 0]]}, {"s": "feux", "o": [["Non : ils sont réservés au brouillard et à la neige", 1], ["Oui, dès qu'il pleut", 0], ["Oui, seulement sur autoroute", 0], ["Oui, si on voit à moins de 150 m", 0]]}, {"s": "enfant", "o": [["Oui : la sécurité enfant bloque seulement l'ouverture de l'intérieur", 1], ["Non, la porte est bloquée des deux côtés", 0], ["Seulement avec la clé", 0], ["Non, il faut d'abord désactiver l'airbag", 0]]}, {"s": "balisage", "o": [["Délimiter la zone clairement et largement, de façon visible (feux de détresse, gilet, triangle)", 1], ["Pour protéger les victimes et éviter un sur-accident", 1], ["Déplacer tout de suite toutes les victimes sur le bas-côté", 0], ["Attendre les secours dans sa voiture sans rien faire", 0]]}, {"s": "saip", "o": [["Se mettre en sécurité", 1], ["S'informer par les médias et les sites des autorités", 1], ["Respecter les consignes des autorités", 1], ["Aller chercher ses enfants à l'école", 0]]}, {"s": "saip", "o": [["Un signal national d'alerte qui monte et descend sur trois cycles", 1], ["Un signal de fin d'alerte continu", 1], ["Un seul signal de 10 secondes", 0], ["Un message vocal enregistré", 0]]}, {"s": "alerte", "o": [["Le numéro de l'autoroute", 1], ["Le sens de circulation", 1], ["Le point kilométrique (les bornes au bord de la route)", 1], ["Seulement la couleur de sa voiture", 0]]}, {"s": "pls", "o": [["Regarder si le ventre et la poitrine se soulèvent", 1], ["Sentir de l'air sortir à l'expiration (ex. : la joue près de sa bouche)", 1], ["Lui donner à boire", 0], ["Lui secouer fortement la tête", 0]]}, {"s": "pls", "o": [["La victime ne répond pas et ne réagit pas", 1], ["Mais elle respire", 1], ["La victime ne respire plus", 0], ["La victime parle mais ne peut pas bouger", 0]]}, {"s": "degager", "o": [["Dans un endroit assez éloigné du danger et de ses conséquences", 1], ["Dans sa propre voiture", 0], ["Juste à côté du véhicule accidenté", 0], ["Au milieu de la route pour être bien vue", 0]]}, {"s": "balisage", "o": [["Le gilet de haute visibilité, enfilé avant de sortir", 1], ["Le triangle de pré-signalisation", 0], ["Un casque", 0], ["Aucun équipement", 0]]}, {"s": "alerte", "o": [["Pour que les secours apportent les moyens adaptés", 1], ["Pour qu'ils arrivent le plus vite possible", 1], ["Pour ne pas avoir à remplir de constat", 0], ["Pour ne pas avoir d'amende", 0]]}, {"s": "alerte", "o": [["Le 18 (sapeurs-pompiers)", 1], ["Le 15 (SAMU)", 1], ["Le 112 (numéro d'urgence européen)", 1], ["Le 118 218 (renseignements)", 0]]}, {"s": "hemo", "o": [["Appuyer fort sur l'endroit qui saigne avec les doigts ou la paume", 1], ["Mettre un tissu propre sur la plaie", 1], ["Laisser couler le sang pour nettoyer la plaie", 0], ["Donner à boire à la victime", 0]]}, {"s": "balisage", "o": [["À environ 30 m de la panne ou de l'accident", 1], ["Avant un virage ou un sommet de côte s'il y en a un", 1], ["Juste derrière la voiture, à 1 m", 0], ["À 300 m", 0]]}, {"s": "degager", "o": [["La victime est visible et facile à atteindre", 1], ["Rien ne gêne son dégagement", 1], ["Être sûr de pouvoir le faire", 1], ["La victime a demandé à être déplacée", 0]]}, {"s": "alerte", "o": [["Le numéro de téléphone d'où vous appelez", 1], ["La nature du problème (ex. : accident, nombre de blessés)", 1], ["Le lieu le plus précis possible", 1], ["Votre numéro de permis", 0]]}, {"s": "alerte", "o": [["Un téléphone portable", 1], ["À défaut, un téléphone fixe", 1], ["Ou une borne d'appel d'urgence", 1], ["Un message sur les réseaux sociaux", 0]]}, {"s": "cardio", "o": [["Alerter immédiatement les secours", 1], ["Masser (réanimation cardio-pulmonaire)", 1], ["Défibriller avec un défibrillateur automatisé si possible", 1], ["Asseoir la victime contre un mur", 0]]}, {"s": "degager", "o": [["Face à un danger réel, immédiat et non contrôlable (ex. : un début d'incendie)", 1], ["Cela doit rester exceptionnel", 1], ["Dès qu'elle a mal", 0], ["Pour l'installer plus confortablement", 0]]}, {"s": "saip", "o": [["Avertir la population d'un danger imminent", 1], ["Ou qu'un événement grave est en train de se produire", 1], ["Annoncer la météo du jour", 0], ["Tester les sirènes tous les jours", 0]]}, {"s": "saip", "o": [["Par les sirènes", 1], ["Par les médias (Radio France, France Télévisions)", 1], ["Par l'application SAIP", 1], ["Par courrier", 0]]}, {"s": null, "o": [["À partir de 10 ans", 1], ["À partir de 16 ans", 0], ["À partir de 18 ans", 0], ["Seulement après le permis", 0]]}, {"s": "cardio", "o": [["Les lésions du cerveau arrivent dès les premières minutes", 1], ["Pour ne pas avoir à attendre les secours", 0], ["Parce que la victime a froid", 0], ["Ce n'est pas utile, mieux vaut attendre", 0]]}, {"s": "alerte", "o": [["Il peut vous conseiller et vous guider sur les gestes à faire ou à ne pas faire", 1], ["Pour vérifier votre identité", 0], ["Parce que l'appel est payant", 0], ["Pour vous faire patienter", 0]]}, {"s": "alerte", "o": [["Uniquement quand votre correspondant vous invite à le faire", 1], ["Dès que vous avez donné l'adresse", 0], ["Au bout de 30 secondes", 0], ["Quand vous entendez la sirène", 0]]}, {"s": "pls", "o": [["L'arrêt respiratoire", 1], ["L'arrêt cardiaque", 1], ["Une hémorragie", 0], ["Une brûlure", 0]]}, {"s": "pls", "o": [["Elle risque de s'étouffer avec des liquides dans la gorge (ex. : vomissements)", 1], ["Sa langue peut tomber en arrière et bloquer la respiration", 1], ["Elle risque d'avoir froid", 0], ["Elle risque une fracture", 0]]}, {"s": "cardio", "o": [["Non : il ne délivre un choc que si la victime est en arrêt cardiaque", 1], ["Oui, il peut arrêter le cœur", 0], ["Oui, seul un médecin peut l'utiliser", 0], ["Oui, il brûle toujours la peau", 0]]}, {"s": "hemo", "o": [["Une perte de sang prolongée qui ne s'arrête pas", 1], ["Elle imbibe un mouchoir de sang en quelques secondes", 1], ["Un petit saignement qui s'arrête tout seul", 0], ["Un bleu sous la peau", 0]]}, {"s": "hemo", "o": [["Une détresse circulatoire", 1], ["Un arrêt cardiaque", 1], ["Une fracture", 0], ["Une forte fièvre", 0]]}, {"s": "cardio", "o": [["Elle ne répond pas et ne réagit pas", 1], ["Elle ne respire pas ou respire de façon anormale", 1], ["Elle parle mais a mal à la poitrine", 0], ["Elle saigne beaucoup", 0]]}, {"s": "cardio", "o": [["Un appareil qui peut rétablir une activité cardiaque normale chez une victime en arrêt cardiaque", 1], ["Un appareil qui mesure la tension", 0], ["Un appareil qui aide à respirer", 0], ["Un appareil réservé aux médecins", 0]]}, {"s": "cardio", "o": [["Le cœur ne fonctionne plus", 1], ["Ou il fonctionne de façon anarchique", 1], ["Le cœur bat lentement mais régulièrement", 0], ["Une simple douleur à la poitrine", 0]]}, {"s": "cardio", "o": [["La mort de la victime en quelques minutes", 1], ["Une fracture des côtes", 0], ["Une simple fatigue", 0], ["Une perte de mémoire passagère", 0]]}, {"s": "pls", "o": [["Lui poser des questions simples (ex. : « Vous m'entendez ? »)", 1], ["Lui secouer doucement les épaules", 1], ["Lui prendre la main et demander un geste simple (« Serrez-moi la main »)", 1], ["Lui jeter de l'eau froide au visage", 0]]}];
+// Illustrations originales « Comprendre » (SVG animés en CSS), une par thème
+const CAR_SIDE=(x,y,s,col)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M4 40 Q4 28 16 26 L34 12 Q39 8 47 8 L78 8 Q86 8 91 14 L104 26 Q116 28 116 38 L116 44 Q116 48 112 48 L8 48 Q4 48 4 44Z" fill="${col}"/><path d="M38 14 Q41 12 46 12 L60 12 L60 26 L26 26Z M64 12 L77 12 Q83 12 87 17 L95 26 L64 26Z" fill="#DCEBFA"/><circle cx="28" cy="48" r="10" fill="#2B2B33"/><circle cx="28" cy="48" r="4" fill="#C9CDD6"/><circle cx="92" cy="48" r="10" fill="#2B2B33"/><circle cx="92" cy="48" r="4" fill="#C9CDD6"/></g>`;
+const SCENES={
+feux:{t:"Les feux de la voiture",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#1E2A4A"/><circle cx="270" cy="34" r="12" fill="#F4F1D0"/><rect y="132" width="320" height="58" fill="#2E3650"/><path d="M0 160 H320" stroke="#F4F1D0" stroke-width="3" stroke-dasharray="18 14"/>
+<g class="sc-cross"><path d="M118 120 L215 132 L215 150 L118 128Z" fill="#FFE9A3" opacity=".75"/><text x="160" y="24" fill="#FFE9A3" font-size="15" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Feux de croisement : ≈ 30 m</text></g>
+<g class="sc-route"><path d="M118 118 L320 92 L320 150 L118 128Z" fill="#FFF4C7" opacity=".8"/><text x="160" y="24" fill="#FFF4C7" font-size="15" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Feux de route : ≈ 100 m</text><g transform="translate(292 112)"><path d="M0-14 L3-3 14 0 3 3 0 14-3 3-14 0-3-3Z" fill="#FFF"/></g><text x="250" y="80" fill="#FF9C9C" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">éblouissement !</text></g>
+${CAR_SIDE(4,84,1,"#E35D8C")}<rect x="112" y="114" width="8" height="8" rx="2" fill="#FFE9A3"/></svg>`,
+pts:["Croisement : on éclaire la route sans éblouir ceux d'en face.","Route : seulement quand personne n'arrive en face ni devant.","Feux de position : visibles à 150 m par temps clair.","Brouillard arrière : seulement par brouillard ou neige, pas sous la pluie."]},
+vitres:{t:"Vitres, essuie-glaces et buée",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#DCE9F5"/><path d="M40 160 Q60 40 160 34 Q260 40 280 160Z" fill="#9CC3E6" stroke="#4A5A70" stroke-width="6"/>
+<path class="sc-fog" d="M46 156 Q64 46 160 40 Q256 46 274 156Z" fill="#F2F6FA"/>
+<g class="sc-drops" fill="#5B8FC7"><circle cx="110" cy="80" r="3"/><circle cx="200" cy="70" r="3"/><circle cx="150" cy="110" r="3"/><circle cx="230" cy="120" r="3"/><circle cx="90" cy="130" r="3"/></g>
+<g class="sc-wiper" style="transform-origin:160px 160px"><path d="M160 160 L96 64" stroke="#2B2B33" stroke-width="6" stroke-linecap="round"/></g><circle cx="160" cy="160" r="8" fill="#2B2B33"/>
+<text x="160" y="184" fill="#33415A" font-size="13" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Air chaud + ventilation + clim : la buée part</text></svg>`,
+pts:["Balais usés : ils laissent des traces quand il pleut.","En hiver : liquide lave-glace antigel pour qu'il ne gèle pas.","Buée : air chaud, ventilation forte et climatisation.","Recyclage de l'air trop long : la buée revient."]},
+pneus:{t:"Les pneus",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#EEF2F6"/><rect y="146" width="320" height="44" fill="#6B7280"/><rect class="sc-water" y="140" width="320" height="10" fill="#7FB3E8" opacity=".85"/>
+<g class="sc-tire" style="transform-origin:110px 100px"><circle cx="110" cy="100" r="48" fill="#26272D"/><circle cx="110" cy="100" r="22" fill="#B8BEC8"/><g stroke="#3B3C44" stroke-width="5"><path d="M110 52v14M110 134v14M62 100h14M144 100h14M76 66l10 10M134 124l10 10M144 66l-10 10M86 124l-10 10"/></g></g>
+<g transform="translate(236 70)"><circle r="40" fill="#FFF" stroke="#4A5A70" stroke-width="4"/><path d="M-28 12 A30 30 0 1 1 28 12" fill="none" stroke="#D8DEE6" stroke-width="6"/><g class="sc-gauge"><path d="M0 0 L-22 -6" stroke="#E35D8C" stroke-width="4" stroke-linecap="round"/></g><circle r="5" fill="#2B2B33"/><text y="28" fill="#33415A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">2,2 bar</text></g>
+<text x="160" y="176" fill="#FFF" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Film d'eau sous le pneu = aquaplanage</text></svg>`,
+pts:["Pression : chaque mois et avant un long trajet, pneus froids.","Où la trouver : portière, notice, trappe à carburant.","Coffre chargé : augmenter la pression.","Aquaplanage : un film d'eau, risque de perte de contrôle."]},
+voiture:{t:"Capot et coffre",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#F3EEF6"/><rect y="150" width="320" height="40" fill="#D9D2DE"/>
+<g transform="translate(40 62)"><path d="M4 70 Q4 54 22 50 L60 22 Q68 16 80 16 L160 16 Q172 16 180 24 L206 50 Q236 54 236 68 L236 80 Q236 88 228 88 L12 88 Q4 88 4 80Z" fill="#E35D8C"/><path d="M66 26 Q70 22 80 22 L112 22 L112 48 L44 48Z M118 22 L158 22 Q168 22 174 30 L192 48 L118 48Z" fill="#DCEBFA"/>
+<g class="sc-hood"><path d="M206 50 Q236 54 236 64 L206 64Z" fill="#C94A79"/><path d="M190 50 L236 50 Q238 52 236 58 L190 58Z" fill="#B63F6B"/></g>
+<g class="sc-trunk"><path d="M4 66 Q4 54 22 50 L40 50 L40 60 L4 66Z" fill="#B63F6B"/></g>
+<circle cx="52" cy="88" r="18" fill="#2B2B33"/><circle cx="52" cy="88" r="7" fill="#C9CDD6"/><circle cx="188" cy="88" r="18" fill="#2B2B33"/><circle cx="188" cy="88" r="7" fill="#C9CDD6"/></g>
+<g font-family="system-ui,sans-serif" font-weight="700" font-size="13"><text x="262" y="40" fill="#8E2E55" text-anchor="middle">CAPOT</text><text x="262" y="56" fill="#6B5B6E" font-size="11" text-anchor="middle">à l'avant</text><path d="M262 62 L262 106" stroke="#8E2E55" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="52" y="40" fill="#8E2E55" text-anchor="middle">COFFRE</text><text x="52" y="56" fill="#6B5B6E" font-size="11" text-anchor="middle">à l'arrière</text><path d="M52 62 L52 110" stroke="#8E2E55" stroke-width="2" stroke-dasharray="3 3"/></g></svg>`,
+pts:["Sous le capot : moteur, huile, liquides (frein, refroidissement, lave-glace), batterie.","Niveaux : moteur froid et voiture sur un terrain plat.","Capot mal fermé : il peut s'ouvrir en roulant.","Coffre chargé ou porte-vélo : plaque et feux doivent rester visibles."]},
+balisage:{t:"Protéger : le balisage",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#E7F0E4"/><rect y="70" width="320" height="80" fill="#6B7280"/><path d="M0 110 H320" stroke="#FFF" stroke-width="3" stroke-dasharray="16 12"/><rect y="150" width="320" height="6" fill="#B8BEC8"/>
+<g transform="translate(232 76)"><rect width="66" height="30" rx="8" fill="#E35D8C"/><rect x="8" y="4" width="50" height="22" rx="5" fill="#C94A79"/><g class="sc-blink" fill="#FFB020"><rect x="-3" y="2" width="6" height="6" rx="2"/><rect x="-3" y="22" width="6" height="6" rx="2"/><rect x="63" y="2" width="6" height="6" rx="2"/><rect x="63" y="22" width="6" height="6" rx="2"/></g></g>
+<g class="sc-tri" transform="translate(96 92)"><path d="M0-14 L13 9 L-13 9Z" fill="none" stroke="#E0262E" stroke-width="5" stroke-linejoin="round"/></g>
+<g font-family="system-ui,sans-serif" font-weight="700"><path d="M104 132 L228 132" stroke="#FFF" stroke-width="2"/><path d="M104 127 V137 M228 127 V137" stroke="#FFF" stroke-width="2"/><text x="166" y="128" fill="#FFF" font-size="13" text-anchor="middle">≈ 30 m</text></g>
+<g transform="translate(300 168)"><circle cy="-12" r="6" fill="#F2C9A8"/><rect x="-7" y="-6" width="14" height="18" rx="4" fill="#E6F23A" stroke="#C4D120" stroke-width="2"/></g>
+<text x="146" y="180" fill="#2E4A2A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Détresse → gilet → triangle → à l'abri</text>
+<text x="160" y="40" fill="#2E4A2A" font-size="13" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Sur autoroute : pas de triangle</text></svg>`,
+pts:["1. Allumer les feux de détresse.","2. Enfiler le gilet avant de sortir.","3. Triangle à environ 30 m (avant un virage ou une côte si besoin), sauf sur autoroute.","4. Se mettre en sécurité derrière la glissière."]},
+freins:{t:"Les freins",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#EEF2F6"/>
+<g transform="translate(70 40)"><path d="M10 0 L10 70" stroke="#4A5A70" stroke-width="8" stroke-linecap="round"/><g class="sc-pedal"><path d="M10 0 L30 92" stroke="#4A5A70" stroke-width="8" stroke-linecap="round"/><rect x="12" y="88" width="40" height="14" rx="5" fill="#2B2B33"/></g><text x="30" y="128" fill="#33415A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">pédale de frein</text></g>
+<g transform="translate(226 92)"><circle r="46" fill="#B8BEC8"/><circle r="40" fill="#D8DEE6"/><circle r="12" fill="#8A93A3"/><g class="sc-disc"><circle r="30" fill="none"/><circle cx="0" cy="-28" r="3" fill="#8A93A3"/><circle cx="24" cy="14" r="3" fill="#8A93A3"/><circle cx="-24" cy="14" r="3" fill="#8A93A3"/></g><rect class="sc-caliper" x="30" y="-22" width="20" height="44" rx="6" fill="#E35D8C"/></g>
+<text x="226" y="168" fill="#33415A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">disque + étrier</text></svg>`,
+pts:["Liquide de frein trop bas : le freinage est moins efficace.","Frein de parking mal desserré : les freins chauffent et s'abîment.","Feux stop en panne : ceux de derrière ne voient pas que vous freinez."]},
+tableau:{t:"Le tableau de bord",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#23262F"/><path d="M30 150 A130 130 0 0 1 290 150" fill="none" stroke="#3A3F4C" stroke-width="16"/>
+<g class="sc-left" fill="#2FD17A"><path d="M56 40 L40 52 L56 64 V58 H74 V46 H56Z"/></g><g class="sc-right" fill="#2FD17A"><path d="M264 40 L280 52 L264 64 V58 H246 V46 H264Z"/></g>
+<g transform="translate(110 92)"><circle r="22" fill="#3A1F1F"/><path class="sc-red" d="M-12 6 Q-12-8 0-8 Q12-8 12 6 Z M-3-8 V-14 H3 V-8" fill="#FF4D4D"/></g>
+<g transform="translate(210 92)"><circle r="22" fill="#3A311F"/><path class="sc-orange" d="M-13 6 V-6 H-6 L-3-10 H6 L9-6 H13 V6Z" fill="#FFB020"/></g>
+<g font-family="system-ui,sans-serif" font-weight="700" font-size="12" text-anchor="middle"><text x="110" y="132" fill="#FF8A8A">ROUGE</text><text x="110" y="147" fill="#C8CCD6" font-size="11">danger : s'arrêter</text><text x="210" y="132" fill="#FFC966">ORANGE</text><text x="210" y="147" fill="#C8CCD6" font-size="11">à surveiller</text>
+<text x="160" y="176" fill="#C8CCD6" font-size="11">clignotant qui clignote plus vite = ampoule grillée</text></g></svg>`,
+pts:["Voyant rouge : anomalie ou danger.","Voyant orange : élément important à surveiller.","Clignotant plus rapide : une ampoule ne marche plus.","Volant bien réglé : confort, commandes, tableau de bord visible, airbag efficace."]},
+alcool:{t:"Alcool et permis probatoire",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#FBF1F4"/>
+<g transform="translate(86 40)"><path d="M0 0 H56 L48 100 Q47 110 38 110 H18 Q9 110 8 100Z" fill="#FFF" stroke="#8E6B7C" stroke-width="4"/><rect class="sc-wine" x="7" y="40" width="42" height="64" fill="#C94A79" opacity=".8"/>
+<path d="M-10 -10 L66 120" stroke="#E0262E" stroke-width="8" stroke-linecap="round"/></g>
+<g font-family="system-ui,sans-serif" font-weight="800" text-anchor="middle"><text x="226" y="86" fill="#8E2E55" font-size="40">0,2 g/l</text><text x="226" y="116" fill="#5A4652" font-size="16">= 0 verre</text><text x="226" y="142" fill="#86697A" font-size="11" font-weight="700">un seul verre</text><text x="226" y="157" fill="#86697A" font-size="11" font-weight="700">peut suffire à dépasser</text></g></svg>`,
+pts:["Permis probatoire : limite à 0,2 g/l de sang.","En pratique : 0 verre, car un seul verre peut suffire à dépasser."]},
+enfant:{t:"Enfants et sécurité",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#EEF2F6"/>
+<g transform="translate(24 30)"><rect width="130" height="120" rx="14" fill="#E35D8C"/><rect x="12" y="10" width="106" height="44" rx="8" fill="#DCEBFA"/><rect x="10" y="78" width="30" height="16" rx="4" fill="#C94A79"/>
+<g class="sc-lock"><rect x="20" y="104" width="22" height="10" rx="5" fill="#2B2B33"/><circle class="sc-knob" cx="25" cy="109" r="4" fill="#FFF"/></g><text x="65" y="140" fill="#33415A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">sécurité enfant</text></g>
+<g transform="translate(186 34)"><path d="M10 100 L10 30 Q10 10 30 10 L60 10" stroke="#4A5A70" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M30 100 Q24 60 40 40 Q70 30 90 50 L90 100Z" fill="#7C6BD8"/><circle cx="60" cy="54" r="12" fill="#F2C9A8"/><path d="M40 98 H96" stroke="#2B2B33" stroke-width="6" stroke-linecap="round"/>
+<g class="sc-off"><rect x="62" y="-6" width="72" height="22" rx="6" fill="#23262F"/><text x="98" y="10" fill="#FFB020" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui,sans-serif">AIRBAG OFF</text></g>
+<text x="56" y="124" fill="#33415A" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">dos à la route, à l'avant</text></g></svg>`,
+pts:["Sécurité enfant : la porte ne s'ouvre plus de l'intérieur, mais toujours de l'extérieur.","Siège dos à la route à l'avant : désactiver l'airbag passager.","Siège avant : en règle générale à partir de 10 ans.","Isofix : seulement les sièges compatibles. Appui-tête : protège la nuque."]},
+vitesse:{t:"Limiteur et régulateur",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#23262F"/><g transform="translate(160 118)"><path d="M-96 0 A96 96 0 0 1 96 0" fill="none" stroke="#3A3F4C" stroke-width="14"/><path d="M-96 0 A96 96 0 0 1 32 -90" fill="none" stroke="#E35D8C" stroke-width="14" class="sc-arc" pathLength="100"/>
+<g font-family="system-ui,sans-serif" font-size="12" fill="#C8CCD6" text-anchor="middle" font-weight="700"><text x="-80" y="18">0</text><text x="-58" y="-62">50</text><text x="0" y="-80">90</text><text x="58" y="-62">130</text></g>
+<g class="sc-needle"><path d="M0 0 L-78 0" stroke="#FFF" stroke-width="4" stroke-linecap="round"/></g><circle r="8" fill="#FFF"/></g>
+<rect x="112" y="136" width="96" height="30" rx="8" fill="#3A3F4C"/><text x="160" y="157" fill="#FFB020" font-size="15" font-weight="800" text-anchor="middle" font-family="system-ui,sans-serif">LIM 90</text></svg>`,
+pts:["Limiteur : vous ne pouvez pas dépasser la vitesse choisie.","Régulateur : il garde la vitesse tout seul.","Frein ou embrayage : désactive le régulateur tout de suite."]},
+alerte:{t:"Alerter les secours",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#EEF5FB"/><g transform="translate(40 18)"><rect width="96" height="156" rx="16" fill="#2B2B33"/><rect x="8" y="14" width="80" height="128" rx="8" fill="#F7F9FC"/>
+<g font-family="system-ui,sans-serif" font-weight="800" text-anchor="middle"><g class="sc-k1"><rect x="16" y="26" width="64" height="30" rx="8" fill="#E0262E"/><text x="48" y="47" fill="#FFF" font-size="16">15</text></g><g class="sc-k2"><rect x="16" y="62" width="64" height="30" rx="8" fill="#E0262E"/><text x="48" y="83" fill="#FFF" font-size="16">18</text></g><g class="sc-k3"><rect x="16" y="98" width="64" height="30" rx="8" fill="#3559C7"/><text x="48" y="119" fill="#FFF" font-size="16">112</text></g></g></g>
+<g font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#2B3A55"><text x="160" y="50">15 : SAMU</text><text x="160" y="76">18 : pompiers</text><text x="160" y="102">112 : toute l'Europe</text><text x="160" y="138" fill="#6B7A90" font-size="12">Ne raccrochez que quand</text><text x="160" y="154" fill="#6B7A90" font-size="12">on vous le dit.</text></g></svg>`,
+pts:["Dire : votre numéro, ce qui se passe, l'endroit précis.","Sur autoroute : n° d'autoroute, sens, point kilométrique.","Moyens : portable, sinon fixe ou borne d'appel d'urgence.","Ne raccrochez pas avant qu'on vous y invite : on peut vous guider."]},
+saip:{t:"Le signal d'alerte (SAIP)",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#F4F1EA"/><g transform="translate(52 70)"><rect x="-14" y="10" width="28" height="70" fill="#8A93A3"/><path d="M-26 10 H26 L18 -14 H-18Z" fill="#4A5A70"/><g class="sc-waves" fill="none" stroke="#E35D8C" stroke-width="4" stroke-linecap="round"><path d="M34 -14 Q44 0 34 14"/><path d="M44 -24 Q60 0 44 24"/></g></g>
+<g transform="translate(110 40)"><path d="M0 50 H190" stroke="#D2CBBE" stroke-width="2"/><path class="sc-line" d="M0 50 Q12 10 24 50 T48 50 Q60 10 72 50 T96 50 Q108 10 120 50 T144 50" fill="none" stroke="#C94A79" stroke-width="4" pathLength="100"/><text x="95" y="96" fill="#5A4652" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">alerte : 3 cycles</text>
+<path d="M0 120 H190" stroke="#2E7D5B" stroke-width="4"/><text x="95" y="140" fill="#2E7D5B" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">fin d'alerte : son continu</text></g></svg>`,
+pts:["But : prévenir d'un danger imminent ou d'un événement grave.","Diffusion : sirènes, médias (Radio France, France Télévisions), application.","Que faire : se mettre en sécurité, s'informer, suivre les consignes."]},
+pls:{t:"Victime inconsciente",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#EEF5F0"/><rect y="140" width="320" height="50" fill="#CFE3D6"/>
+<g class="sc-body"><g transform="translate(70 118)"><circle cx="0" cy="0" r="14" fill="#F2C9A8"/><rect x="14" y="-12" width="110" height="26" rx="12" fill="#5B8FC7"/><rect x="124" y="-10" width="80" height="20" rx="9" fill="#2B3A55"/><rect class="sc-chest" x="30" y="-18" width="60" height="10" rx="5" fill="#5B8FC7"/></g></g>
+<g font-family="system-ui,sans-serif" font-weight="700" font-size="12" fill="#2E4A3A" text-anchor="middle"><text x="160" y="36">Le ventre et la poitrine se soulèvent ?</text><text x="160" y="54" fill="#6B8072" font-size="11">→ elle respire</text><text x="160" y="176">Ne la laissez pas sur le dos : risque d'étouffement</text></g></svg>`,
+pts:["Conscience : questions simples, secouer doucement les épaules, « serrez-moi la main ».","Respiration : le ventre et la poitrine se soulèvent, on sent de l'air.","Perte de connaissance : ne répond pas, ne réagit pas, mais respire.","Sur le dos : risque d'étouffement (langue, liquides), donc risque d'arrêt."]},
+degager:{t:"Le dégagement d'urgence",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#F6EFE9"/><rect y="140" width="320" height="50" fill="#D9CFC5"/>
+<g transform="translate(212 92)">${CAR_SIDE(0,0,.8,"#8A93A3").replace('<g transform="translate(0 0) scale(.8)">','<g transform="scale(.8)">')}</g>
+<g transform="translate(262 100)"><g class="sc-fire"><path d="M0 0 Q-14-16 0-36 Q4-22 14-18 Q18 -6 10 0Z" fill="#FF7A1A"/><path d="M2 0 Q-6-10 2-22 Q6-12 10-8Z" fill="#FFD23F"/></g></g>
+<g class="sc-drag"><g transform="translate(190 128)"><circle cx="-60" cy="0" r="8" fill="#F2C9A8"/><rect x="-52" y="-6" width="60" height="14" rx="7" fill="#5B8FC7"/><circle cx="-76" cy="-30" r="8" fill="#F2C9A8"/><rect x="-82" y="-22" width="14" height="34" rx="6" fill="#E35D8C"/><path d="M-70 -10 L-62 -2" stroke="#E35D8C" stroke-width="5" stroke-linecap="round"/></g></g>
+<text x="160" y="176" fill="#5A4636" font-size="12" font-weight="700" text-anchor="middle" font-family="system-ui,sans-serif">Danger réel, immédiat, non contrôlable</text></svg>`,
+pts:["Seulement si le danger est réel, immédiat et non contrôlable (ex. : incendie).","Victime visible, facile à atteindre, rien ne gêne, et vous en êtes capable.","L'emmener assez loin du danger. Cela reste exceptionnel."]},
+hemo:{t:"Arrêter une hémorragie",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#FBF1F2"/><rect x="40" y="96" width="240" height="44" rx="22" fill="#F2C9A8"/><circle class="sc-blood" cx="160" cy="118" r="14" fill="#C8102E"/>
+<g class="sc-press"><rect x="128" y="74" width="64" height="30" rx="8" fill="#FFF" stroke="#D9D2DE" stroke-width="2"/><path d="M134 74 Q132 40 150 36 L176 36 Q190 40 188 74Z" fill="#E8B48F"/></g>
+<g font-family="system-ui,sans-serif" font-weight="700" font-size="12" fill="#5A2A33" text-anchor="middle"><text x="160" y="24">Appuyer fort, avec un tissu propre</text><text x="160" y="170">Hémorragie : un mouchoir imbibé en secondes</text></g></svg>`,
+pts:["Appuyer fort sur l'endroit qui saigne (doigts ou paume).","Mettre un tissu propre sur la plaie.","Risques : détresse circulatoire, arrêt cardiaque."]},
+cardio:{t:"Arrêt cardiaque : Alerter, Masser, Défibriller",svg:`<svg viewBox="0 0 320 190"><rect width="320" height="190" rx="16" fill="#FBF1F4"/><rect y="146" width="320" height="44" fill="#E7D8DF"/>
+<g transform="translate(40 124)"><circle cx="0" cy="0" r="14" fill="#F2C9A8"/><rect x="14" y="-12" width="120" height="26" rx="12" fill="#5B8FC7"/></g>
+<g class="sc-cpr"><g transform="translate(100 60)"><path d="M0 50 L-6 6 Q-6-6 6-6 L18-6 Q30-6 30 6 L24 50" fill="#E8B48F"/><rect x="-8" y="46" width="36" height="12" rx="6" fill="#E8B48F"/></g></g>
+<g transform="translate(220 74)"><rect width="74" height="62" rx="12" fill="#2E9E5B"/><path class="sc-bolt" d="M40 10 L26 34 H38 L32 54 L50 26 H38Z" fill="#FFF"/><text x="37" y="78" fill="#2E5A3E" font-size="12" font-weight="800" text-anchor="middle" font-family="system-ui,sans-serif">DAE</text></g>
+<text x="160" y="28" fill="#8E2E55" font-size="13" font-weight="800" text-anchor="middle" font-family="system-ui,sans-serif">100 à 120 compressions par minute</text></svg>`,
+pts:["Signes : ne répond pas, ne réagit pas, ne respire pas (ou mal).","1. Alerter  2. Masser  3. Défibriller avec le DAE.","Le DAE ne donne un choc que si c'est nécessaire.","Vite : le cerveau est touché dès les premières minutes."]},
+};
+
+if(typeof module!=="undefined") module.exports={QUESTIONS,evaluate,norm,lookupWord,LEXIQUE,QCM,SCENES};
 </script>
 
 <script>
@@ -1199,7 +1464,7 @@ document.addEventListener("pointerdown",function once(){ unlockClips(); document
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 let screen="start", curView="home";
-const VIEW_TXT={home:["Permis Quizz","L'oral du permis B, à voix haute"],errors:["Mes erreurs","Les questions à retravailler"],
+const VIEW_TXT={home:["Permis Quizz","L'oral du permis B, à voix haute"],learn:["Apprentissage","Cochez la ou les bonnes réponses"],errors:["Mes erreurs","Les questions à retravailler"],
   notes:["Mes notes","Votre progression"],book:["Mon lexique","Les mots expliqués en russe"]};
 const TRAIN_TXT={start:"Questions au hasard, réponse au micro, note sur 20",quiz:"Répondez avec vos mots",end:"Votre résultat"};
 function setView(v){
@@ -1212,6 +1477,8 @@ function setView(v){
   if(v!=="train"&&synth) synth.cancel();
   if(v!=="train") stopRec(true);
   if(v==="home") renderHome();
+  if(v==="learn"&&!$("lStart").hidden) renderLearnStart();
+  if(v!=="learn") closeHelp();
   if(v==="notes"&&notes.length) drawNotesChart();
   if(!$("settings").hidden) toggleSettings(false);
 }
@@ -1344,7 +1611,7 @@ function renderQ(){
   $("qCat").classList.toggle("ps",item.c==="PS");
   $("qCount").textContent=(idx+1)+" / "+deck.length;
   setRoad(idx/deck.length);
-  renderWords($("qText"),item.q);
+  renderWords($("qText"),item.q); placeLex("exam");
   $("transcript").textContent="";
   $("typedInput").value=""; $("typedWrap").open=dictMode;
   $("verdict").hidden=true; $("afterRow").hidden=true;
@@ -1688,7 +1955,7 @@ $("btnCloseSettings").onclick=()=>toggleSettings(false);
 });
 $("goExam").onclick=()=>{ if(screen==="end") screen="start"; setView("train"); window.scrollTo(0,0); };
 $("goErr").onclick=()=>{ setView("errors"); window.scrollTo(0,0); };
-$("btnRuToggle").onclick=()=>{ const c=$("lexCard"); c.hidden=!c.hidden; $("btnRuToggle").setAttribute("aria-expanded",!c.hidden); if(!c.hidden){ c.scrollIntoView({block:"nearest",behavior:"smooth"}); } };
+$("btnRuToggle").onclick=()=>{ placeLex("exam"); const c=$("lexCard"); c.hidden=!c.hidden; setRuAria(!c.hidden); if(!c.hidden){ c.scrollIntoView({block:"nearest",behavior:"smooth"}); } };
 $("btnErrAll").onclick=workErrors;$("btnStartErr").onclick=workErrors;renderErrs();
 $("btnAgain").onclick=()=>{if(synth) synth.cancel();newSeries();};
 $("btnHome").onclick=()=>{if(synth) synth.cancel(); screen="start"; setView("home"); window.scrollTo(0,0);};
@@ -1716,7 +1983,7 @@ function sayRu(text){
 function explain(word){
   word=(word||"").trim(); if(!word) return;
   stopRec(true); $("lexResult").hidden=false;
-  if($("lexCard").hidden&&!$("quiz").hidden){ $("lexCard").hidden=false; $("btnRuToggle").setAttribute("aria-expanded","true"); }
+  if($("lexCard").hidden&&(!$("quiz").hidden||!$("lQuiz").hidden)){ if(!$("lQuiz").hidden&&curView==="learn") placeLex("learn"); else placeLex("exam"); $("lexCard").hidden=false; setRuAria(true); }
   $("lexInput").value=word;
   const e=lookupWord(word);
   const web=$("lexWeb");
@@ -1895,6 +2162,113 @@ function showDiag(){
   ];
   $("soundDiag").textContent=lines.join("\n"); $("soundDiag").hidden=false;
 }
+
+
+/* ===================== Apprentissage ===================== */
+const LSEEN_KEY="oralPermisB.apprentissage";
+let lseen={}; try{lseen=JSON.parse(localStorage.getItem(LSEEN_KEY)||"{}")||{};}catch(e){lseen={};}
+function saveLseen(){ try{localStorage.setItem(LSEEN_KEY,JSON.stringify(lseen));}catch(e){} }
+let lDeck=[], lIdx=0, lScore=0, lSel=new Set(), lDone=false, lOrder=[];
+const lexCardEl=$("lexCard"), lexHome=lexCardEl.parentNode, lexAnchor=lexCardEl.nextElementSibling;
+function placeLex(mode){
+  const c=$("lexCard");
+  if(mode==="learn"){ if(c.parentNode!==$("lLexSlot")) $("lLexSlot").appendChild(c); }
+  else if(c.parentNode!==lexHome) lexHome.insertBefore(c,lexAnchor);
+}
+function setRuAria(open){ $("btnRuToggle").setAttribute("aria-expanded",open); $("lRu").setAttribute("aria-expanded",open); }
+function renderLearnStart(){
+  const ok=QUESTIONS.filter(q=>lseen[q.q]===1).length;
+  $("lSeenInfo").textContent=ok?ok+" question"+(ok>1?"s":"")+" sur "+QUESTIONS.length+" déjà réussie"+(ok>1?"s":"")+" en apprentissage. Les autres passent en priorité.":"Les questions s'affichent avec 4 propositions. Une ou plusieurs sont justes.";
+  $("goLearnSub").textContent=ok?ok+"/"+QUESTIONS.length+" questions réussies en QCM":"QCM : cochez la ou les bonnes réponses";
+}
+function lScreen(id){ ["lStart","lQuiz","lEnd"].forEach(s=>$(s).hidden=s!==id); window.scrollTo(0,0); }
+function learnStart(){
+  const cat=document.querySelector('input[name="lcat"]:checked').value, nb=+document.querySelector('input[name="lnb"]:checked').value||10;
+  const pool=QUESTIONS.filter(q=>cat==="ALL"||q.c===cat);
+  const fresh=shuffle(pool.filter(q=>lseen[q.q]!==1)), done=shuffle(pool.filter(q=>lseen[q.q]===1));
+  lDeck=fresh.concat(done).slice(0,nb); lIdx=0; lScore=0;
+  lScreen("lQuiz"); placeLex("learn"); renderL();
+}
+function renderL(){
+  const item=lDeck[lIdx], data=QCM[QUESTIONS.indexOf(item)];
+  lSel.clear(); lDone=false; lOrder=shuffle([0,1,2,3]);
+  $("lCat").textContent=item.c==="SR"?"Sécurité routière":"Premiers secours"; $("lCat").classList.toggle("ps",item.c==="PS");
+  $("lCount").textContent=(lIdx+1)+" / "+lDeck.length; $("lBar").style.width=(lIdx/lDeck.length*100)+"%";
+  renderWords($("lText"),item.q);
+  $("lHelp").hidden=!(data.s&&SCENES[data.s]);
+  const nOk=data.o.filter(o=>o[1]).length;
+  $("lHint").textContent="Une ou plusieurs réponses possibles";
+  const box=$("lOpts"); box.innerHTML="";
+  lOrder.forEach((oi,pos)=>{
+    const b=document.createElement("button"); b.type="button"; b.className="opt"; b.dataset.oi=oi; b.setAttribute("aria-pressed","false");
+    const l=document.createElement("span"); l.className="let"; l.textContent="ABCD"[pos];
+    const t=document.createElement("span"); t.className="otx"; t.textContent=data.o[oi][0];
+    const m=document.createElement("span"); m.className="mk"; m.hidden=true;
+    b.append(l,t,m);
+    b.onclick=()=>{ if(lDone) return; if(lSel.has(oi)) lSel.delete(oi); else lSel.add(oi); b.setAttribute("aria-pressed",lSel.has(oi)); $("lValidate").disabled=!lSel.size; };
+    box.append(b);
+  });
+  $("lResult").hidden=true; $("lValidate").hidden=false; $("lValidate").disabled=true; $("lNext").hidden=true;
+  if($("optRead").checked) say(item.q);
+}
+function learnValidate(){
+  if(lDone||!lSel.size) return; lDone=true;
+  const item=lDeck[lIdx], data=QCM[QUESTIONS.indexOf(item)];
+  let goodSel=0, wrongSel=0, missed=0;
+  $("lOpts").querySelectorAll(".opt").forEach(b=>{
+    const oi=+b.dataset.oi, ok=!!data.o[oi][1], sel=lSel.has(oi), m=b.querySelector(".mk");
+    b.disabled=true; b.removeAttribute("aria-pressed");
+    if(ok&&sel){ b.classList.add("good"); m.textContent="✓ Juste"; m.hidden=false; goodSel++; }
+    else if(ok&&!sel){ b.classList.add("missed"); m.textContent="Oubliée"; m.hidden=false; missed++; }
+    else if(!ok&&sel){ b.classList.add("wrong"); m.textContent="✗ Faux"; m.hidden=false; wrongSel++; }
+    else b.classList.add("dim");
+  });
+  const allOk=!wrongSel&&!missed;
+  const r=$("lResult"); r.hidden=false; r.className="lres "+(allOk?"ok":(goodSel?"partial":"bad"));
+  $("lResTitle").textContent=allOk?"Bonne réponse !":(goodSel?"Presque !":"Ce n'est pas ça");
+  $("lResTxt").textContent=allOk?"Vous avez trouvé toutes les bonnes propositions.":
+    (goodSel?(missed?"Il manquait "+missed+" bonne"+(missed>1?"s":"")+" proposition"+(missed>1?"s":"")+". ":"")+(wrongSel?wrongSel+" proposition"+(wrongSel>1?"s":"")+" cochée"+(wrongSel>1?"s":"")+" en trop.":""):"Regardez les propositions en vert : ce sont les bonnes.");
+  renderWords($("lOfficial"),item.a);
+  if(allOk) lScore++;
+  lseen[item.q]=allOk?1:0; saveLseen(); setMast(item.q,allOk?"ok":"bad");
+  $("lValidate").hidden=true; $("lNext").hidden=false; $("lNext").textContent=lIdx===lDeck.length-1?"Voir le résultat":"Question suivante";
+  $("lNext").focus({preventScroll:true});
+  r.scrollIntoView({block:"nearest",behavior:"smooth"});
+  if($("optSpeakVerdict").checked){ const w=allOk?"C'est bon !":"Pas bon."; sayParts($("optReadAnswer").checked?[w,"La réponse attendue :",item.a]:[w]); }
+}
+function learnNext(){
+  if(synth) synth.cancel();
+  if(lIdx<lDeck.length-1){ lIdx++; renderL(); window.scrollTo(0,0); return; }
+  $("lBar").style.width="100%";
+  const n=lDeck.length; $("lScore").textContent=lScore; $("lScoreOf").textContent="/"+n;
+  const v=lScore/n*20; const ring=$("lRing"); ring.parentNode.style.setProperty("--ringc",noteColor(v)); ring.setAttribute("stroke-dasharray","0 100");
+  $("lMsg").textContent=v>=17?"Excellent !":(v>=14?"Très bien !":(v>=10?"C'est en bonne voie.":"On continue, ça va venir."));
+  lScreen("lEnd"); setRing(ring,v); if(v>=15) confetti();
+  renderLearnStart();
+}
+$("btnLearnStart").onclick=learnStart;
+$("lValidate").onclick=learnValidate;
+$("lNext").onclick=learnNext;
+$("lAgain").onclick=()=>{ lScreen("lStart"); learnStart(); };
+$("lHome").onclick=()=>{ lScreen("lStart"); setView("home"); window.scrollTo(0,0); };
+$("lListen").onclick=()=>say(lDeck[lIdx].q);
+$("lHearAns").onclick=()=>say(lDeck[lIdx].a);
+$("goLearn").onclick=()=>{ if(!$("lEnd").hidden) lScreen("lStart"); setView("learn"); window.scrollTo(0,0); };
+$("lRu").onclick=()=>{ placeLex("learn"); const c=$("lexCard"); c.hidden=!c.hidden; setRuAria(!c.hidden); if(!c.hidden) c.scrollIntoView({block:"nearest",behavior:"smooth"}); };
+/* fenêtre « Comprendre » */
+let helpKey=null, helpReturn=null;
+function openHelp(key){
+  const sc=SCENES[key]; if(!sc) return; helpKey=key; helpReturn=document.activeElement;
+  $("helpTitle").textContent=sc.t; $("helpScene").innerHTML=sc.svg;
+  const ul=$("helpPts"); ul.innerHTML=""; sc.pts.forEach(t=>{ const li=document.createElement("li"); li.textContent=t; ul.append(li); });
+  $("helpSheet").hidden=false; $("helpClose").focus({preventScroll:true});
+}
+function closeHelp(){ if($("helpSheet").hidden) return; $("helpSheet").hidden=true; $("helpScene").innerHTML=""; if(helpReturn&&helpReturn.focus) helpReturn.focus({preventScroll:true}); }
+$("lHelp").onclick=()=>{ const d=QCM[QUESTIONS.indexOf(lDeck[lIdx])]; openHelp(d.s); };
+$("helpClose").onclick=closeHelp; $("helpBg").onclick=closeHelp;
+$("helpReplay").onclick=()=>{ if(helpKey){ $("helpScene").innerHTML=SCENES[helpKey].svg; } };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("helpSheet").hidden){ e.preventDefault(); closeHelp(); } });
+renderLearnStart();
 
 /* ----- Animation de lancement ----- */
 (function(){
