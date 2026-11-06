@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test des voix</title>
+<style>
+body{font:17px/1.4 -apple-system,system-ui,sans-serif;margin:0;padding:16px;background:#F8F4F6;color:#3E2433}
+h1{font-size:1.4rem;margin:0 0 4px}p{margin:6px 0}
+button{display:block;width:100%;margin:10px 0;padding:16px;border:0;border-radius:14px;background:#B94A82;color:#fff;font:700 1.05rem system-ui}
+button.alt{background:#fff;color:#B94A82;border:2px solid #B94A82}
+#log{background:#fff;border-radius:12px;padding:10px;font:13px/1.4 ui-monospace,monospace;white-space:pre-wrap;min-height:120px}
+</style></head><body>
+<h1>Test des voix de l'iPhone</h1>
+<p>Touchez les boutons un par un et écoutez. Le journal en bas dit ce qui se passe.</p>
+<p id="info">Recherche des voix…</p>
+<button id="b1">1. Français (voix par défaut)</button>
+<button id="b2">2. Russe (voix par défaut)</button>
+<button id="b3" class="alt">3. Russe avec la voix choisie (Milena)</button>
+<button id="b4" class="alt">4. Son enregistré (ma voix) puis russe</button>
+<div id="log"></div>
+<script>
+const L=document.getElementById("log"),S=window.speechSynthesis;
+const log=t=>{L.textContent=new Date().toLocaleTimeString()+"  "+t+"\n"+L.textContent;};
+function info(){ if(!S){document.getElementById("info").textContent="Pas de synthèse vocale dans ce navigateur.";return;}
+  const v=S.getVoices(), ru=v.filter(x=>/^ru/i.test(x.lang)), fr=v.filter(x=>/^fr/i.test(x.lang));
+  document.getElementById("info").textContent=v.length+" voix · russes : "+(ru.map(x=>x.name).join(", ")||"aucune")+" · françaises : "+fr.length; }
+if(S){ info(); S.onvoiceschanged=info; setTimeout(info,800); }
+function speak(text,lang,useVoice){
+  if(!S){log("pas de synthèse vocale");return;}
+  const u=new SpeechSynthesisUtterance(text); u.lang=lang; u.volume=1; u.rate=1;
+  if(useVoice){ const v=S.getVoices().filter(x=>x.lang.toLowerCase().startsWith(lang.slice(0,2))); const m=v.find(x=>/milena/i.test(x.name))||v[0]; if(m){u.voice=m; log("voix : "+m.name);} else log("aucune voix "+lang); }
+  u.onstart=()=>log("▶ début : "+text); u.onend=()=>log("■ fin"); u.onerror=e=>log("✗ erreur : "+e.error);
+  S.speak(u); log("demande envoyée ("+lang+") · speaking="+S.speaking+" pending="+S.pending);
+}
+document.getElementById("b1").onclick=()=>speak("Bonjour, ceci est un test de la voix de l'iPhone.","fr-FR",false);
+document.getElementById("b2").onclick=()=>speak("Здравствуйте! Это проверка голоса.","ru-RU",false);
+document.getElementById("b3").onclick=()=>speak("Здравствуйте! Это проверка голоса.","ru-RU",true);
+document.getElementById("b4").onclick=()=>{ const a=new Audio("voix/fr/f186.mp3"); a.onended=()=>{log("son enregistré terminé");speak("Здравствуйте! Это проверка голоса.","ru-RU",true);}; a.play().then(()=>log("son enregistré lancé")).catch(e=>log("son enregistré refusé : "+e.name)); };
+</script></body></html>
