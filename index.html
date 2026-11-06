@@ -2110,9 +2110,7 @@ function renderBook(){
     const txt=document.createElement("div"); txt.className="btxt";
     const fr=document.createElement("p"); fr.className="fr"; fr.textContent=b.fr;
     const ru=document.createElement("p"); ru.lang="ru"; ru.textContent=b.ru;
-    const dt=document.createElement("p"); dt.className="date";
-    dt.textContent="Ajouté le "+new Date(b.d).toLocaleDateString("fr-FR")+(b.n>1?" · demandé "+b.n+" fois":"");
-    txt.append(fr,ru,dt);
+    txt.append(fr,ru);
     const act=document.createElement("div"); act.className="actions";
     const pfr=document.createElement("button"); pfr.className="btn ghost small sm"; pfr.type="button"; pfr.textContent="🔊 FR";
     pfr.setAttribute("aria-label","Écouter "+b.fr+" en français"); pfr.onclick=()=>say(b.fr);
