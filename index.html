@@ -451,6 +451,9 @@ button,.opt,.cell,.tab{-webkit-tap-highlight-color:transparent}
 .opt:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .opt .let{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:grid;place-items:center;font:800 1rem var(--ui-d);background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
 .opt .otx{flex:1;min-width:0}
+.opt .ospk{flex-shrink:0;width:38px;height:38px;margin:-6px -6px -6px 0;border-radius:12px;display:grid;place-items:center;color:var(--blue);cursor:pointer}
+.opt .ospk svg{width:20px;height:20px}
+.opt .ospk:active{background:color-mix(in srgb,var(--blue) 14%,transparent)}
 .opt .mk{flex-shrink:0;font:800 .78rem var(--ui);padding:3px 8px;border-radius:999px}
 .opt[aria-pressed="true"]{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
 .opt[aria-pressed="true"] .let{background:var(--blue);color:var(--blue-ink)}
@@ -1533,7 +1536,7 @@ function sayParts(parts,onend){
 function say(text,onend){ sayParts([text],onend); }
 if(synth){ const _cancel=synth.cancel.bind(synth); try{ synth.cancel=()=>{ stopClip(); _cancel(); }; }catch(e){} }
 function unlockClips(){ try{ if(!clipOn){ clipEl.src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="; const p=clipEl.play(); if(p&&p.catch) p.catch(()=>{}); } }catch(e){} }
-document.addEventListener("pointerdown",function once(){ unlockClips(); document.removeEventListener("pointerdown",once,true); },true);
+document.addEventListener("pointerdown",function once(){ unlockClips(); try{ if(synth&&!synth.speaking){ const u=new SpeechSynthesisUtterance(" "); u.volume=0; synth.speak(u); } }catch(e){} document.removeEventListener("pointerdown",once,true); },true); // débloque aussi la voix de l'iPhone
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 let screen="start", curView="home";
@@ -2318,13 +2321,26 @@ function renderL(){
     const l=document.createElement("span"); l.className="let"; l.textContent="ABCD"[pos];
     const t=document.createElement("span"); t.className="otx"; t.textContent=data.o[oi][0];
     const m=document.createElement("span"); m.className="mk"; m.hidden=true;
-    b.append(l,t,m);
+    const sp=document.createElement("span"); sp.className="ospk"; sp.setAttribute("role","button"); sp.tabIndex=0;
+    sp.setAttribute("aria-label","Écouter la proposition "+"ABCD"[pos]); sp.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
+    const hear=e=>{ e.stopPropagation(); e.preventDefault(); speakFr(optSpoken(data.o[oi][0])); };
+    sp.onclick=hear; sp.onkeydown=e=>{ if(e.key==="Enter"||e.key===" ") hear(e); };
+    b.append(l,t,m,sp);
     b.onclick=()=>{ if(lDone) return; if(lSel.has(oi)) lSel.delete(oi); else lSel.add(oi); b.setAttribute("aria-pressed",lSel.has(oi)); $("lValidate").disabled=!lSel.size; };
     box.append(b);
   });
   $("lResult").hidden=true; $("lValidate").hidden=false; $("lValidate").disabled=true; $("lNext").hidden=true;
-  if($("optRead").checked) say(item.q);
+  if($("optRead").checked) readLearn();
 }
+/* Lecture des propositions : la question (voix enregistrée si disponible) puis A, B, C, D */
+function optSpoken(t){ return t.replace(/\bex\.\s*:?/gi,"par exemple").replace(/\b2e\b/g,"deuxième").replace(/\+ avec \+/g,"plus avec plus").replace(/− avec −/g,"moins avec moins").replace(/\s*\(\s*/g,", ").replace(/\s*\)\s*/g,", ").replace(/,\s*,/g,",").replace(/,\s*$/,""); }
+function speakFr(text,onend){ stopClip(); if(synth&&synth.getVoices().length!==voiceCount) pickVoice(); speakChunks(text,frVoice,"fr-FR",onend); }
+function readOptions(){
+  const data=QCM[QUESTIONS.indexOf(lDeck[lIdx])];
+  const txt=lOrder.map((oi,pos)=>"Proposition "+"ABCD"[pos]+" : "+optSpoken(data.o[oi][0])+".").join(" ");
+  speakFr(txt);
+}
+function readLearn(){ const item=lDeck[lIdx], id=lIdx; say(item.q,()=>{ if(lIdx===id&&!lDone) setTimeout(()=>{ if(lIdx===id&&!lDone) readOptions(); },250); }); }
 function learnValidate(){
   if(lDone||!lSel.size) return; lDone=true;
   const item=lDeck[lIdx], data=QCM[QUESTIONS.indexOf(item)];
@@ -2365,7 +2381,7 @@ $("lValidate").onclick=learnValidate;
 $("lNext").onclick=learnNext;
 $("lAgain").onclick=()=>{ lScreen("lStart"); learnStart(); };
 $("lHome").onclick=()=>{ lScreen("lStart"); setView("home"); window.scrollTo(0,0); };
-$("lListen").onclick=()=>say(lDeck[lIdx].q);
+$("lListen").onclick=readLearn;
 $("lHearAns").onclick=()=>say(lDeck[lIdx].a);
 $("goLearn").onclick=()=>{ if(!$("lEnd").hidden) lScreen("lStart"); setView("learn"); window.scrollTo(0,0); };
 $("lRu").onclick=()=>{ placeLex("learn"); const c=$("lexCard"); c.hidden=!c.hidden; setRuAria(!c.hidden); if(!c.hidden) c.scrollIntoView({block:"nearest",behavior:"smooth"}); };
