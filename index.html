@@ -194,6 +194,14 @@ a.btn{text-decoration:none;display:inline-block}
 .tab .sm{display:none}
 @media (max-width:560px){.tab .lg{display:none}.tab .sm{display:inline}.tab{padding:9px 10px;font-size:.92rem;flex:1 1 auto}.tabs{gap:2px;padding:5px}}
 @media (hover:none) and (pointer:coarse){.kbdhelp{display:none}}
+.qhead{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.qhead .qtext{flex:1;min-width:0}
+.rubtn{flex-shrink:0;width:48px;height:48px;border-radius:14px;border:1.5px solid color-mix(in srgb,var(--blue) 30%,var(--line));background:color-mix(in srgb,var(--blue) 8%,var(--surface));
+  color:var(--blue);font:800 .95rem var(--ui);letter-spacing:.04em;cursor:pointer;display:grid;place-items:center}
+.rubtn[aria-expanded="true"]{background:var(--blue);color:var(--blue-ink);border-color:var(--blue)}
+.rubtn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.lexcard:not([hidden]){animation:unfold .25s ease-out}
+@keyframes unfold{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .ansrow{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
 .anstext{min-width:0}
 .anstext b{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -291,6 +299,119 @@ footer{padding-top:6px}
 @keyframes rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
 @keyframes load{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:reduce){#splash *{animation:none!important}.road-car{transition:none}}
+
+/* ===================== Style appli iPhone ===================== */
+:root{--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,"Atkinson Hyperlegible",sans-serif;
+  --ui-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,"Atkinson Hyperlegible",sans-serif;
+  --group:color-mix(in srgb,var(--bg) 70%,#EEF0F5);--sep:color-mix(in srgb,var(--ink) 9%,transparent);--tabh:58px}
+body{font-family:var(--ui);background:var(--group);background-attachment:scroll;padding-bottom:calc(var(--tabh) + 28px + env(safe-area-inset-bottom,0px))}
+.wrap{gap:14px;max-width:640px}
+.card{border:0;border-radius:20px;box-shadow:0 1px 2px color-mix(in srgb,var(--ink) 5%,transparent),0 8px 24px -16px color-mix(in srgb,var(--ink) 25%,transparent);padding:18px}
+.top{padding-top:6px}
+.brand h1{font-family:var(--ui-d);font-weight:800;letter-spacing:-.02em;font-size:clamp(2rem,8.5vw,2.4rem)}
+.brand .logo{width:50px;height:50px}
+body:not(.v-home) .brand .logo{display:none}
+.tagline{font-family:var(--ui);font-weight:600}
+.group-title{font-family:var(--ui-d);font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin:10px 4px -4px;color:var(--ink)}
+.kicker{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.btn{font-family:var(--ui);border-radius:14px;font-weight:700}
+.btn.big{padding:16px 22px;font-size:1.08rem;border-radius:16px}
+.btn.block{width:100%}
+.row.two{display:flex;gap:10px}
+.row.two>.btn{flex:1 1 0}
+.linkbtn{border:0;background:none;font:600 .95rem var(--ui);color:var(--blue);padding:10px 4px;cursor:pointer;align-self:center}
+.linkbtn.danger{color:var(--bad)}
+.view{gap:14px}
+/* barre d'onglets en bas */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
+  background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);
+  border-top:1px solid var(--sep)}
+.tabbar .tab{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;padding:4px 2px;
+  color:color-mix(in srgb,var(--ink) 45%,transparent);font:600 .68rem var(--ui);cursor:pointer;min-height:var(--tabh);justify-content:center;border-radius:12px;box-shadow:none}
+.tabbar .tab svg{width:26px;height:26px}
+.tabbar .tab[aria-current="page"]{color:var(--blue);background:none;box-shadow:none}
+.tabbar .tab:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.badge{position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#FFF;
+  font:700 .68rem/18px var(--ui);font-style:normal;text-align:center}
+.badge.zero{display:none}
+/* anneau de note */
+.ringcard{display:flex;align-items:center;gap:18px;position:relative;overflow:hidden}
+.ring{width:118px;height:118px;flex-shrink:0;transform:rotate(-90deg)}
+.ring.big{width:132px;height:132px}
+.ring circle{fill:none;stroke-width:11}
+.ring-bg{stroke:color-mix(in srgb,var(--blue) 13%,var(--surface))}
+.ring-fg{stroke:var(--ringc,var(--blue));stroke-linecap:round;transition:stroke-dasharray 1s cubic-bezier(.2,.8,.2,1)}
+.ringtxt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.bignum{font-family:var(--ui-d);margin:0;line-height:1;font-variant-numeric:tabular-nums}
+.bignum b{font-size:clamp(2.6rem,11vw,3.2rem);font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.bignum span{font-size:1.2rem;font-weight:700;color:var(--muted);margin-left:2px}
+.trend{font-size:.9rem;color:var(--muted);font-weight:600}
+.trend .up{color:var(--ok)} .trend .down{color:var(--bad)}
+.verdict-msg{font-family:var(--ui-d);font-weight:800;font-size:1.15rem;color:var(--ink);margin-top:4px}
+#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* tuiles */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{background:var(--surface);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;gap:2px;box-shadow:0 1px 2px color-mix(in srgb,var(--ink) 5%,transparent)}
+.tile b{font-family:var(--ui-d);font-size:1.7rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tile span{font-size:.78rem;font-weight:600;color:var(--muted);line-height:1.25}
+.tile .ti{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);margin-bottom:6px}
+.tile .ti svg{width:18px;height:18px}
+.tile .ti.flame{background:color-mix(in srgb,#FF8A00 16%,var(--surface));color:#E8720C}
+/* listes façon réglages iPhone */
+.card.list{padding:4px 0}
+.cell{display:flex;align-items:center;gap:14px;width:100%;border:0;background:none;padding:12px 16px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;position:relative;min-height:60px}
+.cell.static{cursor:default;min-height:52px}
+.cell+.cell::before{content:"";position:absolute;top:0;right:0;left:62px;height:1px;background:var(--sep)}
+.card.list .cell.static+.cell.static::before{left:44px}
+.cell:not(.static):active{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.cell:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;border-radius:12px}
+.cell[disabled]{cursor:default}
+.cell-ic{width:34px;height:34px;flex-shrink:0;border-radius:10px;display:grid;place-items:center;background:var(--blue);color:var(--blue-ink)}
+.cell-ic svg{width:20px;height:20px}
+.cell-ic.learn{background:#7C4DEA;color:#FFF}
+.cell-ic.err{background:var(--bad);color:#FFF}
+.cell-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cell-txt b{font-weight:700;font-size:1rem}
+.cell-txt span{font-size:.86rem;color:var(--muted);line-height:1.3}
+.chev{width:18px;height:18px;flex-shrink:0;color:color-mix(in srgb,var(--ink) 30%,transparent)}
+.soon{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,#7C4DEA 14%,var(--surface));color:#6A3FD6;flex-shrink:0}
+.cnt{font-family:var(--ui-d);font-size:1.15rem;font-variant-numeric:tabular-nums}
+.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin:0 4px}
+.dot.ok{background:var(--ok)} .dot.pa{background:var(--warn)} .dot.ko{background:var(--bad)} .dot.avg{background:var(--blue)}
+/* maîtrise */
+.mrow{display:grid;grid-template-columns:minmax(0,9.5em) 1fr auto;align-items:center;gap:12px;font-weight:600;font-size:.95rem}
+.mbar{height:10px;border-radius:6px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));overflow:hidden}
+.mbar i{display:block;height:100%;width:0;border-radius:6px;background:var(--blue);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.mrow b{font-variant-numeric:tabular-nums;font-size:.9rem;color:var(--muted)}
+/* notes */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.summary .tile{padding:12px 10px}
+.summary .tile b{font-size:1.5rem}
+.summary .tile i{font-style:normal;font-size:.75rem;color:var(--muted);font-weight:600}
+.chartwrap{position:relative;width:100%}
+#notesChart{width:100%;height:200px;display:block;overflow:visible}
+#notesChart .grid{stroke:var(--sep);stroke-width:1}
+#notesChart .ref{stroke:color-mix(in srgb,var(--ink) 22%,transparent);stroke-width:1;stroke-dasharray:4 4}
+#notesChart .axis{fill:var(--muted);font:600 11px var(--ui)}
+#notesChart .line{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+#notesChart .area{fill:color-mix(in srgb,var(--blue) 12%,transparent)}
+#notesChart .pt{fill:var(--blue);stroke:var(--surface);stroke-width:2}
+#notesChart .pt.sel{r:6}
+#notesChart .hit{fill:transparent;cursor:pointer}
+.ctip{position:absolute;transform:translate(-50%,-115%);background:var(--ink);color:var(--surface);font:700 .82rem var(--ui);padding:6px 10px;border-radius:10px;white-space:nowrap;pointer-events:none;text-align:center}
+.ctip span{display:block;font-weight:500;font-size:.72rem;opacity:.8}
+.hrow .cell-txt b{font-size:.98rem}
+.pill{font:700 .9rem var(--ui-d);font-variant-numeric:tabular-nums;padding:5px 10px;border-radius:999px;flex-shrink:0}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.pa{background:var(--warn-bg);color:var(--warn)} .pill.ko{background:var(--bad-bg);color:var(--bad)}
+/* listes internes */
+.card .review li:first-child{border-top:0;padding-top:0}
+#start .card{gap:18px}
+.seg{background:color-mix(in srgb,var(--ink) 6%,transparent);padding:3px;border-radius:12px;gap:2px;display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.seg label{border:0;border-radius:10px;padding:9px 8px;text-align:center;font-size:.9rem;background:transparent;color:var(--ink)}
+.seg input:checked+label{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px color-mix(in srgb,var(--ink) 18%,transparent)}
+@media (max-width:420px){.seg label{font-size:.82rem;padding:9px 4px}.mrow{grid-template-columns:minmax(0,7.6em) 1fr auto;font-size:.88rem}.summary{grid-template-columns:repeat(2,1fr)}.ringcard{gap:14px}.ring{width:104px;height:104px}}
+@media (prefers-reduced-motion:reduce){.ring-fg,.mbar i{transition:none}}
 </style>
 </head>
 <body>
@@ -351,19 +472,20 @@ footer{padding-top:6px}
   <text x="790" y="292" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="150" fill="#FFF">B</text></g>
 </svg>
       <div>
-        <h1>Permis Quizz</h1>
-        <p class="tagline">L'oral du permis B, à voix haute</p>
+        <h1 id="viewTitle">Permis Quizz</h1>
+        <p class="tagline" id="viewSub">L'oral du permis B, à voix haute</p>
       </div>
     </div>
     <button class="icon-btn round" id="btnSettings" type="button" aria-expanded="false" aria-controls="settings" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </header>
 
-  <nav class="tabs" aria-label="Sections">
-    <button type="button" class="tab" data-view="train" aria-current="page"><span class="lg">Entraînement</span><span class="sm">Quiz</span></button>
-    <button type="button" class="tab" data-view="errors"><span class="lg">Mes erreurs</span><span class="sm">Erreurs</span> <span class="pill" id="tabErr">0</span></button>
-    <button type="button" class="tab" data-view="notes"><span class="lg">Mes notes</span><span class="sm">Notes</span></button>
-    <button type="button" class="tab" data-view="book" id="goBook"><span class="lg">Mon lexique</span><span class="sm">Lexique</span> <span class="pill" id="tabBook">0</span></button>
-  </nav>
+  <nav class="tabbar" aria-label="Sections">
+    <button type="button" class="tab" data-view="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg><span>Accueil</span></button>
+    <button type="button" class="tab" data-view="train"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg><span>Examen blanc</span></button>
+    <button type="button" class="tab" data-view="errors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg><span>Erreurs</span><i class="badge" id="tabErr">0</i></button>
+    <button type="button" class="tab" data-view="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><span>Notes</span></button>
+    <button type="button" class="tab" data-view="book" id="goBook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Lexique</span><i class="badge" id="tabBook">0</i></button>
+</nav>
 
   <section id="settings" class="card stack" hidden>
     <div class="row" style="justify-content:space-between">
@@ -407,18 +529,50 @@ footer{padding-top:6px}
   </section>
 
   <!-- ÉCRAN DÉPART -->
-  <section id="start" class="stack" data-v="train">
-    <div class="hero card">
-      <div class="hero-text stack" style="gap:8px">
-        <h2 id="hello">En route pour l'oral&nbsp;!</h2>
-        <p>Écoutez la question, appuyez sur le micro et répondez avec vos mots. La correction se fait sur le sens.</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><b id="stAvg">–</b><span>Moyenne /20</span></div>
-        <div class="stat"><b id="stSeries">0</b><span>Séries faites</span></div>
-        <div class="stat"><b id="stErr">0</b><span>Erreurs à revoir</span></div>
+  <section id="home" class="stack view" data-v="home">
+    <div class="card ringcard">
+      <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="ring-fg" id="hRing" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/>
+      </svg>
+      <div class="ringtxt">
+        <span class="kicker">Moyenne générale</span>
+        <p class="bignum"><b id="hAvg">–</b><span>/20</span></p>
+        <p class="trend" id="hTrend">Faites votre premier examen blanc pour obtenir une note.</p>
       </div>
     </div>
+    <div class="tiles">
+      <div class="tile"><span class="ti flame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4 0 7-2.7 7-6.6 0-3.4-2.3-5.6-4-7.4-.4 2-1.4 3.2-2.6 3.6.4-3.2-.9-6.3-3.9-8.6C8.7 6.5 5 9.6 5 15.4 5 19.3 8 22 12 22z"/></svg></span><b id="hStreak">0</b><span>jour d'affilée</span></div>
+      <div class="tile"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg></span><b id="hSeries">0</b><span>examens faits</span></div>
+      <div class="tile"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span><b id="hErr">0</b><span>erreurs à revoir</span></div>
+    </div>
+    <h2 class="group-title">Réviser</h2>
+    <div class="card list">
+      <button class="cell" type="button" id="goLearn" disabled>
+        <span class="cell-ic learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9 12 4l10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg></span>
+        <span class="cell-txt"><b>Apprentissage</b><span>Découvrir les questions et leurs réponses</span></span>
+        <span class="soon">Bientôt</span>
+      </button>
+      <button class="cell" type="button" id="goExam">
+        <span class="cell-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3.5" width="14" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg></span>
+        <span class="cell-txt"><b>Examen blanc</b><span>Questions au hasard, réponse au micro, note sur 20</span></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+      <button class="cell" type="button" id="goErr">
+        <span class="cell-ic err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span>
+        <span class="cell-txt"><b>Mes erreurs</b><span id="goErrSub">Aucune erreur à retravailler</span></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+    </div>
+    <h2 class="group-title">Questions maîtrisées</h2>
+    <div class="card stack mastery">
+      <div class="mrow"><span>Sécurité routière</span><div class="mbar"><i id="mSR"></i></div><b id="mSRn">0/0</b></div>
+      <div class="mrow"><span>Premiers secours</span><div class="mbar"><i id="mPS"></i></div><b id="mPSn">0/0</b></div>
+      <p class="muted small-txt">Une question est maîtrisée quand votre dernière réponse était juste.</p>
+    </div>
+  </section>
+
+  <section id="start" class="stack view" data-v="train">
     <div class="card stack">
       <div class="stack" style="gap:8px">
         <span class="lbl">Thème des questions</span>
@@ -436,11 +590,10 @@ footer{padding-top:6px}
         </div>
       </div>
       <div id="noMic" class="notice" hidden>Le micro est bloqué à cet endroit, donc la réponse vocale n'est pas possible ici. Utilisez Permis Quizz installé sur votre PC ou votre Mac, ou ouvrez-le dans Chrome, Edge ou Safari. En attendant, vous pouvez écrire vos réponses.</div>
-      <div class="row">
-        <button class="btn big" id="btnStart">Démarrer une série</button>
-        <button class="btn ghost" id="btnStartErr" type="button" hidden>Travailler mes erreurs</button>
-      </div>
+      <div id="noMic" class="notice" hidden>Le micro est bloqué à cet endroit, donc la réponse vocale n'est pas possible ici. Ouvrez Permis Quizz avec son lien internet dans Safari, Chrome ou Edge, ou installé sur votre PC ou Mac. En attendant, vous pouvez écrire vos réponses.</div>
     </div>
+    <button class="btn big block" id="btnStart">Démarrer l'examen blanc</button>
+    <button class="btn ghost block" id="btnStartErr" type="button" hidden>Travailler mes erreurs</button>
   </section>
 
   <!-- ÉCRAN QUESTION -->
@@ -454,14 +607,15 @@ footer{padding-top:6px}
     </div>
 
     <div class="card stack qcard">
-      <p class="qtext" id="qText"></p>
+      <div class="qhead"><p class="qtext" id="qText"></p>
+        <button class="rubtn" id="btnRuToggle" type="button" aria-expanded="false" aria-controls="lexCard" title="Traduire un mot en russe"><span lang="ru">RU</span></button></div>
       <div class="row">
         <button class="icon-btn" id="btnListen" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg> Réécouter</button>
-        <span class="muted small-txt">Un mot pas compris&nbsp;? Cliquez dessus.</span>
+        <span class="muted small-txt">Un mot pas compris&nbsp;? Touchez-le, ou le bouton RU.</span>
       </div>
     </div>
 
-    <div class="card stack lexcard" id="lexCard">
+    <div class="card stack lexcard" id="lexCard" hidden>
       <div class="row" style="justify-content:space-between">
         <span class="lbl">Un mot difficile&nbsp;?</span>
         <span class="plate ru" lang="ru">По-русски</span>
@@ -528,55 +682,67 @@ footer{padding-top:6px}
   </section>
 
   <!-- ÉCRAN FIN -->
-  <section id="end" class="card stack" data-v="train" hidden>
-    <h2>Arrivée&nbsp;!</h2>
-    <div class="grade">
-      <div class="gbox"><span class="lbl">Note de la série</span><p class="note"><b id="gNote">0</b><span>/20</span></p></div>
-      <div class="gbox"><span class="lbl">Moyenne générale</span><p class="note avg"><b id="gAvg">0</b><span>/20</span></p><p class="muted small-txt" id="gAvgInfo"></p></div>
+  <section id="end" class="stack view" data-v="train" hidden>
+    <div class="card ringcard result">
+      <canvas id="confetti" aria-hidden="true"></canvas>
+      <svg class="ring big" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="ring-fg" id="gRing" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/>
+      </svg>
+      <div class="ringtxt">
+        <span class="kicker">Note de l'examen</span>
+        <p class="bignum"><b id="gNote">0</b><span>/20</span></p>
+        <p class="verdict-msg" id="gMsg"></p>
+        <p class="trend" id="gCompare"></p>
+      </div>
     </div>
-    <div class="score">
-      <div class="s-ok"><b id="sOk">0</b>Bonnes</div>
-      <div class="s-pa"><b id="sPa">0</b>Incomplètes</div>
-      <div class="s-ko"><b id="sKo">0</b>À revoir</div>
+    <div class="card list">
+      <div class="cell static"><span class="dot ok"></span><span class="cell-txt"><b>Bonnes réponses</b></span><b class="cnt" id="sOk">0</b></div>
+      <div class="cell static"><span class="dot pa"></span><span class="cell-txt"><b>Incomplètes</b></span><b class="cnt" id="sPa">0</b></div>
+      <div class="cell static"><span class="dot ko"></span><span class="cell-txt"><b>À revoir</b></span><b class="cnt" id="sKo">0</b></div>
+      <div class="cell static"><span class="dot avg"></span><span class="cell-txt"><b>Moyenne générale</b><span id="gAvgInfo"></span></span><b class="cnt"><span id="gAvg">0</span>/20</b></div>
     </div>
     <div id="reviewBox" class="stack" hidden>
-      <span class="lbl">Les questions de cette série à retravailler</span>
-      <ul class="review" id="reviewList"></ul>
+      <h2 class="group-title">À retravailler</h2>
+      <div class="card"><ul class="review" id="reviewList"></ul></div>
     </div>
-    <div class="row">
-      <button class="btn" id="btnAgain" type="button">Encore 20 questions</button>
-      <button class="btn ghost" id="btnRedo" type="button">Travailler mes erreurs</button>
+    <button class="btn big block" id="btnAgain" type="button">Encore 20 questions</button>
+    <div class="row two">
+      <button class="btn ghost" id="btnRedo" type="button">Mes erreurs</button>
       <button class="btn ghost" id="btnHome" type="button">Accueil</button>
     </div>
   </section>
 
-  <section id="errors" class="card stack" data-v="errors" hidden>
-    <div class="row" style="justify-content:space-between">
-      <h2>Mes erreurs <span class="counter" id="errCount">(0)</span></h2>
-      <button class="btn small" id="btnErrAll" type="button" hidden>Travailler mes erreurs</button>
-    </div>
-    <p class="muted" id="errEmpty">Aucune erreur pour l'instant. Les questions ratées ou incomplètes viendront ici, et en sortiront quand vous les réussirez.</p>
-    <ul class="review" id="errList"></ul>
+  <section id="errors" class="stack view" data-v="errors" hidden>
+    <p class="muted" id="errHead"><span id="errCount">(0)</span></p>
+    <button class="btn big block" id="btnErrAll" type="button" hidden>Travailler mes erreurs</button>
+    <div class="card"><p class="muted" id="errEmpty">Aucune erreur pour l'instant. Les questions ratées ou incomplètes viendront ici, et en sortiront quand vous les réussirez.</p>
+    <ul class="review" id="errList"></ul></div>
   </section>
 
-  <section id="notes" class="card stack" data-v="notes" hidden>
-    <div class="row" style="justify-content:space-between">
-      <h2>Mes notes</h2>
-      <button class="btn ghost small" id="btnClearNotes" type="button" hidden>Effacer les notes</button>
-    </div>
-    <p class="muted" id="notesEmpty">Faites une série : sa note sur 20 s'affichera ici, avec votre moyenne.</p>
+  <section id="notes" class="stack view" data-v="notes" hidden>
+    <div class="card" id="notesEmpty"><p class="muted">Faites un examen blanc : sa note sur 20 s'affichera ici, avec votre moyenne et votre progression.</p></div>
     <div id="notesBody" class="stack" hidden>
-      <p class="note avg"><b id="nAvg">0</b><span>/20</span> <span class="muted" id="nInfo" style="font-family:var(--body);font-size:1rem"></span></p>
-      <div class="chart" id="notesChart" aria-hidden="true"></div>
-      <ul class="review" id="notesList"></ul>
+      <div class="summary">
+        <div class="tile"><span>Moyenne</span><b id="nAvg">0</b><i>/20</i></div>
+        <div class="tile"><span>Meilleure</span><b id="nBest">0</b><i>/20</i></div>
+        <div class="tile"><span>Dernière</span><b id="nLast">0</b><i>/20</i></div>
+        <div class="tile"><span>Examens</span><b id="nCount">0</b><i id="nInfo"></i></div>
+      </div>
+      <h2 class="group-title">Évolution</h2>
+      <div class="card chartcard">
+        <div class="chartwrap"><svg id="notesChart" role="img" aria-label="Évolution des notes"></svg><div class="ctip" id="cTip" hidden></div></div>
+        <p class="muted small-txt">Les lignes repères marquent 10/20 et 15/20. Touchez un point pour voir la note.</p>
+      </div>
+      <h2 class="group-title">Historique</h2>
+      <div class="card list" id="notesList"></div>
+      <button class="linkbtn danger" id="btnClearNotes" type="button" hidden>Effacer les notes</button>
     </div>
   </section>
 
-  <section id="book" class="card stack" data-v="book" hidden>
-    <div class="row" style="justify-content:space-between">
-      <h2>Mon lexique <span class="counter" id="bookCount">(0)</span></h2>
-      <button class="btn ghost small" id="btnClear" type="button" hidden>Tout effacer</button>
-    </div>
+  <section id="book" class="stack view" data-v="book" hidden>
+    <div class="row" style="justify-content:space-between"><p class="muted"><span id="bookCount">(0)</span> mots enregistrés</p><button class="linkbtn danger" id="btnClear" type="button" hidden>Tout effacer</button></div>
+  <div class="card stack">
     <form class="typed" id="bookForm" autocomplete="off" style="flex-wrap:wrap">
       <input id="bookInput" type="text" placeholder="Tapez ou collez un mot à expliquer" aria-label="Mot à expliquer en russe" style="flex:1 1 220px">
       <button class="btn small" type="submit">Expliquer en russe</button>
@@ -585,6 +751,7 @@ footer{padding-top:6px}
     <p class="muted" id="bookEmpty">Les mots que vous faites expliquer en russe s'ajoutent ici automatiquement, pour les revoir plus tard.</p>
     <input id="bookFilter" type="search" placeholder="Rechercher un mot" aria-label="Rechercher dans mon lexique" hidden>
     <ul class="review" id="bookList"></ul>
+  </div>
   </section>
 
   <footer>Permis Quizz · édité par Fabrice M.</footer>
@@ -1025,21 +1192,63 @@ function unlockClips(){ try{ if(!clipOn){ clipEl.src="data:audio/wav;base64,UklG
 document.addEventListener("pointerdown",function once(){ unlockClips(); document.removeEventListener("pointerdown",once,true); },true);
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-let screen="start";
+let screen="start", curView="home";
+const VIEW_TXT={home:["Permis Quizz","L'oral du permis B, à voix haute"],errors:["Mes erreurs","Les questions à retravailler"],
+  notes:["Mes notes","Votre progression"],book:["Mon lexique","Les mots expliqués en russe"]};
+const TRAIN_TXT={start:"Questions au hasard, réponse au micro, note sur 20",quiz:"Répondez avec vos mots",end:"Votre résultat"};
 function setView(v){
+  curView=v;
   document.querySelectorAll(".tab").forEach(t=>{if(t.dataset.view===v) t.setAttribute("aria-current","page"); else t.removeAttribute("aria-current");});
   document.querySelectorAll("[data-v]").forEach(s=>{ s.hidden = v==="train" ? (s.dataset.v!=="train"||s.id!==screen) : s.dataset.v!==v; });
+  document.body.className=document.body.className.replace(/\bv-\S+/g,"").trim()+" v-"+v;
+  const t=v==="train"?["Examen blanc",TRAIN_TXT[screen]||""]:VIEW_TXT[v];
+  $("viewTitle").textContent=t[0]; $("viewSub").textContent=t[1];
   if(v!=="train"&&synth) synth.cancel();
   if(v!=="train") stopRec(true);
-  if(v==="train"&&screen==="start") renderHome();
+  if(v==="home") renderHome();
+  if(v==="notes"&&notes.length) drawNotesChart();
+  if(!$("settings").hidden) toggleSettings(false);
 }
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{setView(t.dataset.view);window.scrollTo(0,0);});
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{ if(t.dataset.view==="train"&&curView==="train"&&screen==="end") screen="start"; setView(t.dataset.view);window.scrollTo(0,0);});
 function show(id){screen=id;setView("train");window.scrollTo(0,0);}
 function setRoad(f){ $("roadCar").style.left="calc((100% - 44px) * "+Math.max(0,Math.min(1,f))+")"; }
+/* maîtrise : dernière réponse donnée à chaque question */
+const MAST_KEY="oralPermisB.maitrise";
+let mast={}; try{mast=JSON.parse(localStorage.getItem(MAST_KEY)||"{}")||{};}catch(e){mast={};}
+function setMast(q,st){ mast[q]=st; try{localStorage.setItem(MAST_KEY,JSON.stringify(mast));}catch(e){} }
+function dayKey(d){ const x=new Date(d); return x.getFullYear()+"-"+(x.getMonth()+1)+"-"+x.getDate(); }
+function streak(){
+  const days=new Set(notes.map(n=>dayKey(n.d))); let n=0; const d=new Date();
+  if(!days.has(dayKey(d))) d.setDate(d.getDate()-1);
+  while(days.has(dayKey(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function noteClass(n){ return n>=15?"ok":(n>=10?"pa":"ko"); }
+function noteColor(n){ return n>=15?"var(--ok)":(n>=10?"var(--warn)":"var(--bad)"); }
+function setRing(el,val){ requestAnimationFrame(()=>{ el.setAttribute("stroke-dasharray",Math.max(0,Math.min(100,val/20*100))+" 100"); }); }
+function trendHTML(cur,prev,sfx){
+  if(prev==null) return "";
+  const d=Math.round((cur-prev)*10)/10;
+  if(Math.abs(d)<0.05) return "<span>= stable "+sfx+"</span>";
+  return d>0?"<span class=\"up\">▲ +"+fmt(d)+" pt"+(Math.abs(d)>=2?"s":"")+"</span> "+sfx:"<span class=\"down\">▼ "+fmt(d)+" pt"+(Math.abs(d)>=2?"s":"")+"</span> "+sfx;
+}
 function renderHome(){
-  $("stAvg").textContent=notes.length?fmt(average()):"–";
-  $("stSeries").textContent=notes.length;
-  $("stErr").textContent=Object.keys(errs).length;
+  const n=notes.length, avg=average();
+  $("hAvg").textContent=n?fmt(avg):"–";
+  const ring=$("hRing"); ring.parentNode.style.setProperty("--ringc",n?noteColor(avg):"var(--blue)"); setRing(ring,n?avg:0);
+  if(!n) $("hTrend").textContent="Faites votre premier examen blanc pour obtenir une note.";
+  else{
+    const prevAvg=n>1?notes.slice(0,-1).reduce((s,x)=>s+x.note,0)/(n-1):null;
+    $("hTrend").innerHTML=(prevAvg!=null?trendHTML(avg,prevAvg,"depuis le dernier examen")+"<br>":"")+"sur "+n+" examen"+(n>1?"s":"");
+  }
+  const st=streak(); $("hStreak").textContent=st; $("hStreak").nextElementSibling.textContent=st>1?"jours d'affilée":"jour d'affilée";
+  $("hSeries").textContent=n; $("hSeries").nextElementSibling.textContent=n>1?"examens faits":"examen fait";
+  const ne=Object.keys(errs).length; $("hErr").textContent=ne; $("hErr").nextElementSibling.textContent=ne>1?"erreurs à revoir":"erreur à revoir";
+  $("goErrSub").textContent=ne?ne+" question"+(ne>1?"s":"")+" à retravailler":"Aucune erreur à retravailler";
+  ["SR","PS"].forEach(c=>{
+    const all=QUESTIONS.filter(q=>q.c===c), ok=all.filter(q=>mast[q.q]==="ok").length;
+    $("m"+c).style.width=(all.length?ok/all.length*100:0)+"%"; $("m"+c+"n").textContent=ok+"/"+all.length;
+  });
 }
 
 let isReview=false;
@@ -1054,29 +1263,47 @@ function fmt(n){return (Math.round(n*10)/10).toLocaleString("fr-FR");}
 function average(){return notes.length?notes.reduce((s,n)=>s+n.note,0)/notes.length:0;}
 const CAT_LBL={ALL:"Les deux",SR:"Sécurité routière",PS:"Premiers secours"};
 function renderNotes(){
-  $("notesEmpty").hidden=notes.length>0; $("notesBody").hidden=!notes.length; $("btnClearNotes").hidden=!notes.length;
-  $("nAvg").textContent=fmt(average());
-  const ch=$("notesChart"); ch.innerHTML="";
-  notes.slice(-15).forEach((n,i,arr)=>{
-    const bar=document.createElement("div"); bar.className="cbar";
-    bar.style.setProperty("--h",(n.note/20*100)+"%");
-    bar.style.setProperty("--c",n.note>=15?"var(--ok)":(n.note>=10?"var(--warn)":"var(--bad)"));
-    const v=document.createElement("span"); v.textContent=fmt(n.note); bar.append(v); ch.append(bar);
-  });
-  if($("stAvg")){$("stAvg").textContent=notes.length?fmt(average()):"–";$("stSeries").textContent=notes.length;}
-  $("nInfo").textContent="de moyenne sur "+notes.length+" série"+(notes.length>1?"s":"");
-  const ul=$("notesList"); ul.innerHTML="";
-  notes.slice().reverse().slice(0,30).forEach((n,i)=>{
-    const li=document.createElement("li"); li.className="entry";
-    const t=document.createElement("div");
-    const a=document.createElement("p"); a.style.fontWeight="700"; a.textContent="Série "+(notes.length-i)+" · "+CAT_LBL[n.cat||"ALL"];
-    const b=document.createElement("p"); b.className="date"; b.textContent=new Date(n.d).toLocaleDateString("fr-FR",{day:"numeric",month:"long"})+" · "+n.ok+" bonnes, "+n.pa+" incomplètes, "+n.ko+" à revoir";
+  const n=notes.length;
+  $("notesEmpty").hidden=n>0; $("notesBody").hidden=!n; $("btnClearNotes").hidden=!n;
+  if(!n) return;
+  const vals=notes.map(x=>x.note);
+  $("nAvg").textContent=fmt(average()); $("nBest").textContent=fmt(Math.max(...vals)); $("nLast").textContent=fmt(vals[n-1]);
+  $("nCount").textContent=n; $("nInfo").textContent=n>1?"examens":"examen";
+  drawNotesChart();
+  const box=$("notesList"); box.innerHTML="";
+  notes.slice().reverse().slice(0,40).forEach((x,i)=>{
+    const row=document.createElement("div"); row.className="cell static hrow";
+    const t=document.createElement("span"); t.className="cell-txt";
+    const a=document.createElement("b"); a.textContent="Examen "+(n-i)+" · "+CAT_LBL[x.cat||"ALL"];
+    const b=document.createElement("span"); b.textContent=new Date(x.d).toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"long"})+" · "+x.ok+" bonnes, "+x.pa+" incomplètes, "+x.ko+" à revoir";
     t.append(a,b);
-    const s=document.createElement("p"); s.className="fr"; s.style.whiteSpace="nowrap"; s.textContent=fmt(n.note)+"/20";
-    s.style.color=n.note>=15?"var(--ok)":(n.note>=10?"var(--warn)":"var(--bad)");
-    li.append(t,s); ul.append(li);
+    const pl=document.createElement("span"); pl.className="pill "+noteClass(x.note); pl.textContent=fmt(x.note)+"/20";
+    row.append(t,pl); box.append(row);
   });
 }
+function drawNotesChart(){
+  const svg=$("notesChart"); const W=Math.max(260,svg.clientWidth||600), H=200, L=34, R=14, T=16, B=26;
+  const pts=notes.slice(-20); const k=pts.length; const first=notes.length-k+1;
+  const x=i=>k<2?L+(W-L-R)/2:L+i*(W-L-R)/(k-1), y=v=>T+(20-v)/20*(H-T-B);
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);
+  let s="";
+  [0,5,10,15,20].forEach(v=>{ s+='<line class="'+(v===10||v===15?"ref":"grid")+'" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text class="axis" x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+v+'</text>'; });
+  const step=Math.max(1,Math.ceil(k/6));
+  pts.forEach((p,i)=>{ if(i%step===0||i===k-1) s+='<text class="axis" x="'+x(i)+'" y="'+(H-6)+'" text-anchor="middle">'+(first+i)+'</text>'; });
+  if(k>1){
+    const d=pts.map((p,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(p.note).toFixed(1)).join(" ");
+    s+='<path class="area" d="'+d+' L'+x(k-1).toFixed(1)+' '+y(0)+' L'+x(0).toFixed(1)+' '+y(0)+' Z"/><path class="line" d="'+d+'"/>';
+  }
+  pts.forEach((p,i)=>{ s+='<circle class="pt" cx="'+x(i)+'" cy="'+y(p.note)+'" r="'+(i===k-1?5.5:4.5)+'"/><circle class="hit" data-i="'+i+'" cx="'+x(i)+'" cy="'+y(p.note)+'" r="16"/>'; });
+  svg.innerHTML=s;
+  const tip=$("cTip");
+  const showTip=el=>{ const i=+el.dataset.i, p=pts[i]; tip.hidden=false;
+    tip.innerHTML=fmt(p.note)+"/20<span>Examen "+(first+i)+" · "+new Date(p.d).toLocaleDateString("fr-FR",{day:"numeric",month:"short"})+"</span>";
+    tip.style.left=(x(i)/W*100)+"%"; tip.style.top=(y(p.note)/H*100)+"%"; };
+  svg.querySelectorAll(".hit").forEach(c=>{ c.addEventListener("mouseenter",()=>showTip(c)); c.addEventListener("click",()=>showTip(c)); });
+  svg.onmouseleave=()=>{ tip.hidden=true; };
+}
+window.addEventListener("resize",()=>{ if(!$("notesBody").hidden&&curView==="notes") drawNotesChart(); });
 let notesArmed=false;
 $("btnClearNotes").onclick=()=>{
   if(!notesArmed){notesArmed=true;$("btnClearNotes").textContent="Confirmer";setTimeout(()=>{notesArmed=false;$("btnClearNotes").textContent="Effacer les notes";},4000);return;}
@@ -1314,6 +1541,7 @@ try{errs=JSON.parse(localStorage.getItem(ERR_KEY)||"{}")||{};}catch(e){errs={};}
 function saveErrs(){try{localStorage.setItem(ERR_KEY,JSON.stringify(errs));}catch(e){}}
 function errItems(){return Object.keys(errs).map(q=>QUESTIONS.find(x=>x.q===q)).filter(Boolean);}
 function recordAnswer(item,text,r){
+  setMast(item.q,r.status);
   if(r.status==="ok"){ if(errs[item.q]){delete errs[item.q];saveErrs();renderErrs();} return; }
   const e=errs[item.q]||{n:0};
   e.n++; e.last=text; e.st=r.status; e.m=r.matched; e.f=!!r.forbidden; e.d=Date.now();
@@ -1321,7 +1549,7 @@ function recordAnswer(item,text,r){
 }
 function renderErrs(){
   const list=errItems(); const n=list.length;
-  $("errCount").textContent="("+n+")"; $("tabErr").textContent=n; if(typeof renderHome==="function"&&$("stErr")) $("stErr").textContent=n;
+  $("errCount").textContent=n?n+" question"+(n>1?"s":"")+" à retravailler. Elles sortent de la liste dès que vous les réussissez.":""; $("tabErr").textContent=n; $("tabErr").classList.toggle("zero",!n); if(typeof renderHome==="function"&&$("stErr")) $("stErr").textContent=n;
   $("errEmpty").hidden=n>0; $("btnErrAll").hidden=!n;
   $("btnErrAll").textContent="Travailler mes erreurs ("+n+")";
   $("btnStartErr").hidden=!n; $("btnStartErr").textContent="Travailler mes erreurs ("+n+")";
@@ -1383,7 +1611,7 @@ function submit(text,full){
   $("btnNext").focus({preventScroll:true});
 }
 $("btnOverride").onclick=()=>{
-  results[idx].status="ok";
+  results[idx].status="ok"; setMast(deck[idx].q,"ok");
   const v=$("verdict"); v.className="verdict ok";
   $("vTitle").textContent="Compté juste"; $("vDetail").textContent="Vous avez corrigé la note.";
   $("btnOverride").hidden=true; if(synth) synth.cancel();
@@ -1405,15 +1633,18 @@ function finish(){
   const done=results.filter(Boolean);
   const c=s=>done.filter(r=>r.status===s).length;
   const note=done.length?Math.round((c("ok")+c("partial")*0.5)/done.length*20*2)/2:0;
+  const prev=notes.length?notes[notes.length-1].note:null;
   $("gNote").textContent=fmt(note);
-  $("gNote").parentElement.style.color=note>=15?"var(--ok)":(note>=10?"var(--warn)":"var(--bad)");
+  const ring=$("gRing"); ring.parentNode.style.setProperty("--ringc",noteColor(note)); ring.setAttribute("stroke-dasharray","0 100");
+  $("gMsg").textContent=note>=17?"Excellent, vous êtes prêt !":(note>=15?"Très bien, continuez !":(note>=10?"Pas mal, encore un effort.":"Courage, on retravaille ça."));
   if(!isReview&&done.length){
     notes.push({d:Date.now(),note,ok:c("ok"),pa:c("partial"),ko:c("bad"),n:done.length,cat:document.querySelector('input[name="cat"]:checked').value});
     try{localStorage.setItem(NOTES_KEY,JSON.stringify(notes));}catch(e){}
     renderNotes();
-  }
+    $("gCompare").innerHTML=prev!=null?trendHTML(note,prev,"par rapport à l'examen précédent"):"Votre premier examen blanc&nbsp;!";
+  } else $("gCompare").textContent=isReview?"Séance « Mes erreurs » : elle ne compte pas dans la moyenne.":"";
   $("gAvg").textContent=fmt(average());
-  $("gAvgInfo").textContent=isReview?"Les séries « Revoir les erreurs » ne comptent pas dans la moyenne.":"sur "+notes.length+" série"+(notes.length>1?"s":"")+" réalisée"+(notes.length>1?"s":"");
+  $("gAvgInfo").textContent="sur "+notes.length+" examen"+(notes.length>1?"s":"");
   $("sOk").textContent=c("ok"); $("sPa").textContent=c("partial"); $("sKo").textContent=c("bad");
   const miss=done.filter(r=>r.status!=="ok");
   const ul=$("reviewList"); ul.innerHTML="";
@@ -1428,7 +1659,19 @@ function finish(){
   $("reviewBox").hidden=!miss.length;
   $("btnRedo").onclick=workErrors; renderErrs();
   show("end");
+  setRing(ring,note);
+  if(note>=15) confetti();
   if($("optSpeakVerdict").checked) say("Terminé. Votre note : "+fmt(note)+" sur 20. Moyenne générale : "+fmt(average())+" sur 20.");
+}
+function confetti(){
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv=$("confetti"), r=cv.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  cv.width=r.width*dpr; cv.height=r.height*dpr; const g=cv.getContext("2d"); g.scale(dpr,dpr);
+  const css=getComputedStyle(document.documentElement), cols=[css.getPropertyValue("--blue"),css.getPropertyValue("--ok"),"#FFC93C",css.getPropertyValue("--red")].map(s=>s.trim()||"#D63384");
+  const P=Array.from({length:70},()=>({x:r.width/2+(Math.random()-.5)*60,y:r.height*.45,vx:(Math.random()-.5)*7,vy:-Math.random()*7-3,s:4+Math.random()*5,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,va:(Math.random()-.5)*.3}));
+  let t=0; (function f(){ t++; g.clearRect(0,0,r.width,r.height);
+    P.forEach(p=>{ p.vy+=.22; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; g.save(); g.translate(p.x,p.y); g.rotate(p.a); g.fillStyle=p.c; g.globalAlpha=Math.max(0,1-t/110); g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); g.restore(); });
+    if(t<110) requestAnimationFrame(f); else g.clearRect(0,0,r.width,r.height); })();
 }
 function toggleSettings(open){$("settings").hidden=!open;$("btnSettings").setAttribute("aria-expanded",open);if(open)$("settings").scrollIntoView({block:"nearest"});}
 $("btnSettings").onclick=()=>toggleSettings($("settings").hidden);
@@ -1437,9 +1680,12 @@ $("btnCloseSettings").onclick=()=>toggleSettings(false);
   try{const v=localStorage.getItem("oralPermisB."+id); if(v!==null) $(id).checked=v==="1";}catch(e){}
   $(id).onchange=()=>{try{localStorage.setItem("oralPermisB."+id,$(id).checked?"1":"0");}catch(e){}};
 });
+$("goExam").onclick=()=>{ if(screen==="end") screen="start"; setView("train"); window.scrollTo(0,0); };
+$("goErr").onclick=()=>{ setView("errors"); window.scrollTo(0,0); };
+$("btnRuToggle").onclick=()=>{ const c=$("lexCard"); c.hidden=!c.hidden; $("btnRuToggle").setAttribute("aria-expanded",!c.hidden); if(!c.hidden){ c.scrollIntoView({block:"nearest",behavior:"smooth"}); } };
 $("btnErrAll").onclick=workErrors;$("btnStartErr").onclick=workErrors;renderErrs();
 $("btnAgain").onclick=()=>{if(synth) synth.cancel();newSeries();};
-$("btnHome").onclick=()=>{if(synth) synth.cancel();show("start");};
+$("btnHome").onclick=()=>{if(synth) synth.cancel(); screen="start"; setView("home"); window.scrollTo(0,0);};
 
 /* ----- Mots cliquables + lexique russe ----- */
 function renderWords(el,text){
@@ -1464,6 +1710,7 @@ function sayRu(text){
 function explain(word){
   word=(word||"").trim(); if(!word) return;
   stopRec(true); $("lexResult").hidden=false;
+  if($("lexCard").hidden&&!$("quiz").hidden){ $("lexCard").hidden=false; $("btnRuToggle").setAttribute("aria-expanded","true"); }
   $("lexInput").value=word;
   const e=lookupWord(word);
   const web=$("lexWeb");
@@ -1496,7 +1743,7 @@ function addToBook(fr,ru){
 }
 function renderBook(){
   const q=norm($("bookFilter").value);
-  $("bookCount").textContent="("+book.length+")";
+  $("bookCount").textContent=book.length; $("tabBook").classList.toggle("zero",!book.length);
   $("tabBook").textContent=book.length;
   $("bookEmpty").hidden=book.length>0;
   $("bookFilter").hidden=book.length<6;
@@ -1668,7 +1915,7 @@ function showDiag(){
      .catch(()=>{ setTimeout(()=>{ const b=$("splashGo"); if(!gone&&b){ b.hidden=false; b.focus(); } }, reduce?300:1500); });
   });
 })();
-renderHome();
+setView("home");
 
 document.addEventListener("keydown",e=>{
   if($("quiz").hidden) return;
