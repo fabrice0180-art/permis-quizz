@@ -1681,6 +1681,7 @@ function newSeries(){
 $("btnStart").onclick=newSeries;
 
 function renderQ(){
+  resetLex();
   stopRec(true);
   const item=deck[idx]; answered=false; finalText="";
   $("qCat").textContent=item.c==="SR"?"Sécurité routière":"Premiers secours";
@@ -2078,7 +2079,14 @@ function explain(word){
   $("btnRu").disabled=false;
   $("bookOut").hidden=false; $("bookOut").textContent=e?(e[1]+" — "+e[2]):("« "+word+" » : этого слова нет в словаре. Essayez Google Traduction.");
   if(e) addToBook(e[1],e[2],e[3]);
+  $("lexInput").value="";   // champ vidé, prêt pour un nouveau mot (le mot reste affiché au-dessus)
   sayRu(ruText);
+}
+/* À la question suivante : la fenêtre de traduction se referme et se remet à zéro (le mot reste dans « Mon lexique ») */
+function resetLex(){
+  $("lexCard").hidden=true; setRuAria(false);
+  $("lexInput").value=""; $("lexResult").hidden=true; $("lexOut").value=""; $("lexWord").textContent=""; $("lexEmo").textContent="";
+  $("lexWeb").hidden=true; $("btnRu").disabled=true; $("btnFrWord").disabled=true; ruText=""; frWord="";
 }
 
 /* ----- Mon lexique (enregistré dans ce navigateur) ----- */
@@ -2305,6 +2313,7 @@ function learnStart(){
   lScreen("lQuiz"); placeLex("learn"); renderL();
 }
 function renderL(){
+  resetLex();
   const item=lDeck[lIdx], data=QCM[QUESTIONS.indexOf(item)];
   lSel.clear(); lDone=false; lOrder=shuffle([0,1,2,3]);
   $("lCat").textContent=item.c==="SR"?"Sécurité routière":"Premiers secours"; $("lCat").classList.toggle("ps",item.c==="PS");
